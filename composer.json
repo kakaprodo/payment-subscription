@@ -1,0 +1,39 @@
+{
+    "name": "kakaprodo/payment-subscription",
+    "description": "A package that manage fixed and pay as you go subscription plans",
+    "type": "library",
+    "keywords": [
+        "laravel payment-subscription",
+        "laravel payment subscription",
+        "laravel subscription",
+        "subscription",
+        "pay as you go subscription",
+        "laravel pay as you go subscription",
+        "kakaprodo"
+    ],
+    "require": {
+        "php": ">=7.3",
+        "laravel/framework": ">=7.0",
+        "kakaprodo/custom-data": ">=2.3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kakaprodo\\PaymentSubscription\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "promesse",
+            "email": "promskakaprodo45@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kakaprodo\\PaymentSubscription\\PaymentSubscriptionServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "license": "MIT"
+}
