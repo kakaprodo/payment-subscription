@@ -1,6 +1,6 @@
 {
     "name": "kakaprodo/payment-subscription",
-    "description": "A package that manage fixed and pay as you go subscription plans",
+    "description": "A Laravel package for managing both fixed and pay-as-you-go subscription plans.",
     "type": "library",
     "keywords": [
         "laravel payment-subscription",

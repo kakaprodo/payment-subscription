@@ -26,23 +26,30 @@ class CustomDataServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerCommands();
-
-        $this->stackToPublish();
+        if (!$this->app->runningInConsole()) {
+            $this->registerCommands();
+            $this->stackToPublish();
+            $this->stackToLoad();
+        }
     }
 
     protected function registerCommands()
     {
-        if (!$this->app->runningInConsole()) return;
-
         $this->commands([]);
     }
 
 
     public function stackToPublish()
     {
-        // $this->publishes([
-        //     __DIR__ . '/config/custom-data.php' => config_path('custom-data.php'),
-        // ], 'custom-data-config');
+        $this->publishes([
+            __DIR__ . '/config/payment-subscription.php' => config_path('payment-subscription.php'),
+        ], 'payment-subscription');
+    }
+
+    protected function stackToLoad()
+    {
+        if (config('database.migration.should_run')) {
+            $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+        }
     }
 }
