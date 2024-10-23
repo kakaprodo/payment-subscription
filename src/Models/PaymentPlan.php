@@ -1,7 +1,11 @@
 <?php
+
 namespace Kakaprodo\PaymentSubscription\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Kakaprodo\PaymentSubscription\Models\FeaturePlan;
+use Kakaprodo\PaymentSubscription\Models\Subscription;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class PaymentPlan extends Model
 {
@@ -20,6 +24,26 @@ class PaymentPlan extends Model
      */
     public function getTable()
     {
-        return config('payment-subscription.database.plan');
+        return config('payment-subscription.tables.plan');
+    }
+
+    public function features(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Feature::class,
+            (new FeaturePlan)->getTable(),
+            'plan_id',
+            'feature_id'
+        );
+    }
+
+    public function consumptions()
+    {
+        return $this->hasMany(PlanConsumption::class, 'plan_id');
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class, 'plan_id');
     }
 }

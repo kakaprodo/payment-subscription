@@ -21,7 +21,7 @@ class PlanConsumption extends Model
      */
     public function getTable()
     {
-        return config('payment-subscription.database.consumptions');
+        return config('payment-subscription.tables.consumptions');
     }
 
     public function plan()

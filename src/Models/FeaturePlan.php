@@ -18,6 +18,6 @@ class FeaturePlan extends Model
      */
     public function getTable()
     {
-        return config('payment-subscription.database.feature_plan');
+        return config('payment-subscription.tables.feature_plan');
     }
 }

@@ -24,7 +24,7 @@ class Feature extends Model
      */
     public function getTable()
     {
-        return config('payment-subscription.database.feature');
+        return config('payment-subscription.tables.feature');
     }
 
     public function plan()

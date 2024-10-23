@@ -20,11 +20,16 @@ class Subscription extends Model
      */
     public function getTable()
     {
-        return config('payment-subscription.database.subscriptions');
+        return config('payment-subscription.tables.subscriptions');
     }
 
     public function plan()
     {
         return $this->belongsTo(PaymentPlan::class, 'plan_id');
+    }
+
+    public function subscriptionable()
+    {
+        return $this->morphTo();
     }
 }
