@@ -3,18 +3,20 @@
 namespace Kakaprodo\PaymentSubscription\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 
 class Feature extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'name',
         'slug',
-        'cost',
         'unit',
-        'plan_id',
         'description',
-        'is_pay_as_you_go',
+        'slug_value',
+        'cost'
     ];
 
     /**
