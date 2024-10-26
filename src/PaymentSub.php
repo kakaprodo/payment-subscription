@@ -2,15 +2,17 @@
 
 namespace Kakaprodo\PaymentSubscription;
 
-use Kakaprodo\PaymentSubscription\Services\Consumption\ConsumptionService;
-use Kakaprodo\PaymentSubscription\Services\Feature\FeatureService;
 use Kakaprodo\PaymentSubscription\Services\Plan\PlanService;
+use Kakaprodo\PaymentSubscription\Services\Feature\FeatureService;
+use Kakaprodo\PaymentSubscription\Services\Discount\DiscountService;
+use Kakaprodo\PaymentSubscription\Services\Consumption\ConsumptionService;
 
 /**
  * The payment sibscription gate
  * @property PlanService $plan
  * @property FeatureService $feature
  * @property ConsumptionService $consumption
+ * @property DiscountService $discount
  */
 class PaymentSub
 {
@@ -18,6 +20,7 @@ class PaymentSub
         'plan' => PlanService::class,
         'feature' => FeatureService::class,
         'consumption' => ConsumptionService::class,
+        'discount' => DiscountService::class,
     ];
 
     /**
@@ -43,6 +46,14 @@ class PaymentSub
     public static function consumption()
     {
         return (new self())->consumption;
+    }
+
+    /**
+     * A gate to plan discount service
+     */
+    public static function discount()
+    {
+        return (new self())->discount;
     }
 
     /**

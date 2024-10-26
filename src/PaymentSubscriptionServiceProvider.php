@@ -3,6 +3,7 @@
 namespace Kakaprodo\PaymentSubscription;
 
 use Illuminate\Support\ServiceProvider;
+use Kakaprodo\PaymentSubscription\Commands\SeedDataCommand;
 use Kakaprodo\PaymentSubscription\Commands\ConfigInstallCommand;
 
 class PaymentSubscriptionServiceProvider extends ServiceProvider
@@ -36,7 +37,10 @@ class PaymentSubscriptionServiceProvider extends ServiceProvider
 
     protected function registerCommands()
     {
-        $this->commands([ConfigInstallCommand::class]);
+        $this->commands([
+            ConfigInstallCommand::class,
+            SeedDataCommand::class
+        ]);
     }
 
 

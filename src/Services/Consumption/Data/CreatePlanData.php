@@ -4,7 +4,7 @@ namespace Kakaprodo\PaymentSubscription\Services\Plan\Data;
 
 use Kakaprodo\PaymentSubscription\Services\Base\Data\BaseData;
 
-class CreatePlanData extends BaseData
+class SavePlanData extends BaseData
 {
     protected function expectedProperties(): array
     {

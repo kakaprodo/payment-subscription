@@ -6,9 +6,6 @@ use Illuminate\Console\Command;
 
 class ConfigInstallCommand extends Command
 {
-    /**
-     * type can be: BarChart, CardCoun, List, PieChart
-     */
     protected $signature = 'payment-subscription:install {--force}';
 
     protected $description = 'Generate the configuration file of the package';
