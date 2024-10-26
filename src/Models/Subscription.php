@@ -3,6 +3,7 @@
 namespace Kakaprodo\PaymentSubscription\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 
 class Subscription extends Model
@@ -11,6 +12,7 @@ class Subscription extends Model
         'subscriptionable_id',
         'subscriptionable_type',
         'plan_id',
+        'discount_id'
     ];
 
     /**
@@ -31,5 +33,10 @@ class Subscription extends Model
     public function subscriptionable()
     {
         return $this->morphTo();
+    }
+
+    public function discount(): BelongsTo
+    {
+        return $this->belongsTo(Discount::class);
     }
 }

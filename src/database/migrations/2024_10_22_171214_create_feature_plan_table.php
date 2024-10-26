@@ -20,6 +20,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('feature_id')->constrained((new Feature())->getTable());
             $table->foreignId('plan_id')->constrained((new PaymentPlan())->getTable());
+            $table->decimal('cost', 8, 2)->nullable()->comment('Overide feature cost if provided');
+            $table->boolean('is_pay_as_you_go')->default(false);
             $table->timestamps();
         });
     }

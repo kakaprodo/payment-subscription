@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('slug')->unique();
             $table->boolean('has_pay_as_you_go')->default(false);
+            $table->boolean('is_free')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
