@@ -5,10 +5,12 @@ namespace Kakaprodo\PaymentSubscription\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
+use Kakaprodo\PaymentSubscription\Models\Traits\HasEntityShareable;
 
 class Feature extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,
+        HasEntityShareable;
 
     protected $fillable = [
         'name',

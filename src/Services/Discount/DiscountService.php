@@ -12,7 +12,7 @@ class DiscountService extends ServiceBase
 {
     public function create(array $options): Discount
     {
-        return CreateDiscountAction::process($options);
+        return CreateDiscountAction::process($this->inputs($options));
     }
 
     /**
@@ -21,9 +21,9 @@ class DiscountService extends ServiceBase
      */
     public function createMany(array $options): bool
     {
-        CreateManyDiscountAction::process([
+        CreateManyDiscountAction::process($this->inputs([
             'discounts' => $options
-        ]);
+        ]));
 
         return true;
     }
@@ -44,10 +44,10 @@ class DiscountService extends ServiceBase
      */
     public function update($discount, array $options): Discount
     {
-        return UpdateDiscountAction::process([
+        return UpdateDiscountAction::process($this->inputs([
             'discount' => $discount,
             ...$options
-        ]);
+        ]));
     }
 
 
@@ -56,7 +56,7 @@ class DiscountService extends ServiceBase
      */
     public function delete(string $plan, $silent = false)
     {
-        $discount = $this->findOrFail(Discount::class, $plan, $silent);
+        $discount = Discount::getOrFail($plan, $silent);
 
         if ($silent && !$discount) return;
 

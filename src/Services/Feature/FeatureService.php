@@ -13,7 +13,7 @@ class FeatureService extends ServiceBase
 
     public function create(array $options): Feature
     {
-        return CreateFeatureAction::process($options);
+        return CreateFeatureAction::process($this->inputs($options));
     }
 
     /**
@@ -22,9 +22,9 @@ class FeatureService extends ServiceBase
      */
     public function createMany(array $options): bool
     {
-        CreateManyFeatureAction::process([
+        CreateManyFeatureAction::process($this->inputs([
             'features' => $options
-        ]);
+        ]));
 
         return true;
     }
@@ -45,10 +45,10 @@ class FeatureService extends ServiceBase
      */
     public function update($feature, array $options): Feature
     {
-        return UpdateFeatureAction::process([
+        return UpdateFeatureAction::process($this->inputs([
             'feature' => $feature,
             ...$options
-        ]);
+        ]));
     }
 
     /**
@@ -56,7 +56,7 @@ class FeatureService extends ServiceBase
      */
     public function delete(string $plan, $silent = false)
     {
-        $feature = $this->findOrFail(Feature::class, $plan, $silent);
+        $feature = Feature::getOrFail($plan, $silent);
 
         if ($silent && !$feature) return;
 

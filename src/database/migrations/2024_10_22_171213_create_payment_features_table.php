@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::create((new Feature())->getTable(), function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->string('slug_value')->nullable()->comment('the value that describes the slug');
             $table->decimal('cost', 8, 2)->default(0);
             $table->string('unit')->nullable();

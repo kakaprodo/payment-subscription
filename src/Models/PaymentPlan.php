@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Kakaprodo\PaymentSubscription\Models\FeaturePlan;
 use Kakaprodo\PaymentSubscription\Models\Subscription;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Kakaprodo\PaymentSubscription\Models\Traits\HasEntityShareable;
 
 class PaymentPlan extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasEntityShareable;
 
     protected $fillable = [
         'initial_cost',

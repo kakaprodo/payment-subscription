@@ -2,17 +2,19 @@
 
 namespace Kakaprodo\PaymentSubscription\Services\Plan;
 
+use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 use Kakaprodo\PaymentSubscription\Services\Base\ServiceBase;
 use Kakaprodo\PaymentSubscription\Services\Plan\Action\CreatePlanAction;
 use Kakaprodo\PaymentSubscription\Services\Plan\Action\UpdatePlanAction;
 use Kakaprodo\PaymentSubscription\Services\Plan\Action\CreateManyPlanAction;
+use Kakaprodo\PaymentSubscription\Services\Plan\Action\ConnectPlanToSubscriberAction;
 
 class PlanService extends ServiceBase
 {
     public function create(array $options): PaymentPlan
     {
-        return CreatePlanAction::process($options);
+        return CreatePlanAction::process($this->inputs($options));
     }
 
     /**
@@ -21,9 +23,9 @@ class PlanService extends ServiceBase
      */
     public function createMany(array $options): bool
     {
-        CreateManyPlanAction::process([
+        CreateManyPlanAction::process($this->inputs([
             'plans' => $options
-        ]);
+        ]));
 
         return true;
     }
@@ -44,10 +46,10 @@ class PlanService extends ServiceBase
      */
     public function update($plan, array $options): PaymentPlan
     {
-        return UpdatePlanAction::process([
+        return UpdatePlanAction::process($this->inputs([
             'plan' => $plan,
             ...$options
-        ]);
+        ]));
     }
 
     /**
@@ -55,10 +57,25 @@ class PlanService extends ServiceBase
      */
     public function delete(string $plan, $silent = false)
     {
-        $plan = $this->findOrFail(PaymentPlan::class, $plan, $silent);
+        $plan = PaymentPlan::getOrFail($plan, $silent);
 
         if ($silent && !$plan) return;
 
         return $plan->delete();
+    }
+
+    /**
+     * Make an entity subscribe to a given plan
+     * 
+     * @param Model $entity
+     * @param string|PaymentPlan $plan
+     */
+    public function receiveSubscriber(Model $entity, $plan, array $options = [])
+    {
+        return ConnectPlanToSubscriberAction::process($this->inputs([
+            'subscriber' => $entity,
+            'plan' => $plan,
+            ...$options
+        ]));
     }
 }
