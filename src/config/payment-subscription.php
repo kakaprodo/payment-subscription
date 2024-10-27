@@ -64,6 +64,15 @@ return [
             //     'description' => 'Student',
             //     'slug' => 'student',
             // ]
+        ],
+        'connect_features_to_plan' => [
+            // 'plan1_slug' => [
+            //     'feature_slug_1',
+            //     'feature_slug_2',
+            // ],
+            // 'plan2_slug' => [
+            //     'feature_slug'
+            // ],
         ]
     ]
 ];

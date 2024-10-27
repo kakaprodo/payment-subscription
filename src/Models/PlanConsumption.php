@@ -8,7 +8,7 @@ use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 class PlanConsumption extends Model
 {
     protected $fillable = [
-        'plan_id',
+        'subscription_id',
         'description',
         'action',
         'price',
@@ -24,8 +24,8 @@ class PlanConsumption extends Model
         return config('payment-subscription.tables.consumptions');
     }
 
-    public function plan()
+    public function subscription()
     {
-        return $this->belongsTo(PaymentPlan::class, 'plan_id');
+        return $this->belongsTo(Subscription::class);
     }
 }

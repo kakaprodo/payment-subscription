@@ -20,7 +20,7 @@ trait HasSubscription
     }
 
     /**
-     * the plan to which the current model is subscribed to
+     * the plan to which the current model is subscribed
      */
     public function plan($loadWith = true)
     {

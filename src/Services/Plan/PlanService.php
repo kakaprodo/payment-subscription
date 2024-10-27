@@ -8,6 +8,7 @@ use Kakaprodo\PaymentSubscription\Services\Base\ServiceBase;
 use Kakaprodo\PaymentSubscription\Services\Plan\Action\CreatePlanAction;
 use Kakaprodo\PaymentSubscription\Services\Plan\Action\UpdatePlanAction;
 use Kakaprodo\PaymentSubscription\Services\Plan\Action\CreateManyPlanAction;
+use Kakaprodo\PaymentSubscription\Services\Plan\Action\AddFeaturesToPlanAction;
 use Kakaprodo\PaymentSubscription\Services\Plan\Action\ConnectPlanToSubscriberAction;
 
 class PlanService extends ServiceBase
@@ -77,5 +78,20 @@ class PlanService extends ServiceBase
             'plan' => $plan,
             ...$options
         ]));
+    }
+
+    /**
+     * Connect a feature to a plan if does not yet exist
+     * 
+     * @param string|PaymentPlan $plan
+     * @param array<string> $features
+     */
+    public function addFeatures($plan, array $featureSlugs): bool
+    {
+        AddFeaturesToPlanAction::process($this->inputs([
+            'plan' => $plan,
+            'features' => $featureSlugs
+        ]));
+        return true;
     }
 }

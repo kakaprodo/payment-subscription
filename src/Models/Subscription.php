@@ -4,6 +4,7 @@ namespace Kakaprodo\PaymentSubscription\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 
 class Subscription extends Model
@@ -12,7 +13,8 @@ class Subscription extends Model
         'subscriptionable_id',
         'subscriptionable_type',
         'plan_id',
-        'discount_id'
+        'discount_id',
+        'canceled'
     ];
 
     /**
@@ -38,5 +40,10 @@ class Subscription extends Model
     public function discount(): BelongsTo
     {
         return $this->belongsTo(Discount::class);
+    }
+
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(PlanConsumption::class, 'subscription_id');
     }
 }
