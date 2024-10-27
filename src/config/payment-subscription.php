@@ -24,6 +24,15 @@ return [
     ],
 
     /**
+     * Here, You can register all the supported subscription status of your system
+     */
+    'status' => [
+        'active',
+        'expired',
+        'canceled'
+    ],
+
+    /**
      * On this section, you can register any record about plan, feature or discount
      * that you want the package to seed for you
      */
@@ -74,5 +83,5 @@ return [
             //     'feature_slug'
             // ],
         ]
-    ]
+    ],
 ];

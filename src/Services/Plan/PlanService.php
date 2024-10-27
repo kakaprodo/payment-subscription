@@ -2,14 +2,12 @@
 
 namespace Kakaprodo\PaymentSubscription\Services\Plan;
 
-use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 use Kakaprodo\PaymentSubscription\Services\Base\ServiceBase;
 use Kakaprodo\PaymentSubscription\Services\Plan\Action\CreatePlanAction;
 use Kakaprodo\PaymentSubscription\Services\Plan\Action\UpdatePlanAction;
 use Kakaprodo\PaymentSubscription\Services\Plan\Action\CreateManyPlanAction;
 use Kakaprodo\PaymentSubscription\Services\Plan\Action\AddFeaturesToPlanAction;
-use Kakaprodo\PaymentSubscription\Services\Plan\Action\ConnectPlanToSubscriberAction;
 
 class PlanService extends ServiceBase
 {
@@ -63,21 +61,6 @@ class PlanService extends ServiceBase
         if ($silent && !$plan) return;
 
         return $plan->delete();
-    }
-
-    /**
-     * Make an entity subscribe to a given plan
-     * 
-     * @param Model $entity
-     * @param string|PaymentPlan $plan
-     */
-    public function receiveSubscriber(Model $entity, $plan, array $options = [])
-    {
-        return ConnectPlanToSubscriberAction::process($this->inputs([
-            'subscriber' => $entity,
-            'plan' => $plan,
-            ...$options
-        ]));
     }
 
     /**

@@ -14,7 +14,7 @@ class Subscription extends Model
         'subscriptionable_type',
         'plan_id',
         'discount_id',
-        'canceled'
+        'status'
     ];
 
     /**
