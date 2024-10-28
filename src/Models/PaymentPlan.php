@@ -4,6 +4,7 @@ namespace Kakaprodo\PaymentSubscription\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Kakaprodo\PaymentSubscription\Models\FeaturePlan;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Kakaprodo\PaymentSubscription\Models\Traits\HasEntityShareable;
@@ -41,8 +42,8 @@ class PaymentPlan extends Model
         );
     }
 
-    public function consumptions()
+    public function subscriptions(): HasMany
     {
-        return $this->hasMany(PlanConsumption::class, 'plan_id');
+        return $this->hasMany(Subscription::class, 'plan_id');
     }
 }

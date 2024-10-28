@@ -20,8 +20,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('subscription_id')->constrained((new Subscription())->getTable());
             $table->string('description')->nullable();
-            $table->string('action');
+            $table->string('action')->nullable();
             $table->decimal('price', 8, 2);
+            $table->boolean('is_paid')->default(false);
             $table->timestamps();
         });
     }

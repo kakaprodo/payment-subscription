@@ -58,4 +58,20 @@ trait HasSubscription
     {
         return PaymentSub::subscription()->changeStatus($this, $status);
     }
+
+    /**
+     * Add a single item to subscription
+     */
+    public function addSubscriptionConsumption(array $options)
+    {
+        return PaymentSub::consumption()->create($this, $options);
+    }
+
+    /**
+     * Add many single item to subscription
+     */
+    public function addManySubscriptionConsumptions(array $options)
+    {
+        return PaymentSub::consumption()->createMany($this, $options);
+    }
 }

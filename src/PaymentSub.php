@@ -22,12 +22,13 @@ class PaymentSub
         'feature' => FeatureService::class,
         'subscription' => SubscripionService::class,
         'discount' => DiscountService::class,
+        'consumption' => ConsumptionService::class,
     ];
 
     /**
      * A gate to plan service
      */
-    public static function plan()
+    public static function plan(): PlanService
     {
         return (new self())->plan;
     }
@@ -36,7 +37,7 @@ class PaymentSub
     /**
      * A gate to feature service
      */
-    public static function feature()
+    public static function feature(): FeatureService
     {
         return (new self())->feature;
     }
@@ -44,7 +45,7 @@ class PaymentSub
     /**
      * A gate to plan subscription service
      */
-    public static function subscription()
+    public static function subscription(): SubscripionService
     {
         return (new self())->subscription;
     }
@@ -52,9 +53,17 @@ class PaymentSub
     /**
      * A gate to plan discount service
      */
-    public static function discount()
+    public static function discount(): DiscountService
     {
         return (new self())->discount;
+    }
+
+    /**
+     * A gate to plan discount service
+     */
+    public static function consumption(): ConsumptionService
+    {
+        return (new self())->consumption;
     }
 
     /**

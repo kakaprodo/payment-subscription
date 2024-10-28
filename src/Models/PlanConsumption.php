@@ -3,15 +3,18 @@
 namespace Kakaprodo\PaymentSubscription\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
+use Kakaprodo\PaymentSubscription\Models\Traits\HasEntityShareable;
 
 class PlanConsumption extends Model
 {
+    use HasEntityShareable;
+
     protected $fillable = [
         'subscription_id',
         'description',
         'action',
         'price',
+        'is_paid'
     ];
 
     /**
