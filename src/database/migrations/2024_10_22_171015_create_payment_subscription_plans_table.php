@@ -17,6 +17,8 @@ return new class extends Migration
         Schema::create((new PaymentPlan())->getTable(), function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('sub_title')->nullable();
+            $table->string('price_format')->nullable();
             $table->decimal('initial_cost', 8, 2)->default(0);
             $table->string('description')->nullable();
             $table->string('slug');

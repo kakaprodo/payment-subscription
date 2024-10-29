@@ -23,7 +23,7 @@ class SaveConsumptionData extends BaseData
             ),
             'description' => $this->property()->string(),
             'price' => $this->property()->number(),
-            'action?' => $this->property()->string(),
+            'action?' => $this->property()->inArray(config('payment-subscription.consumption_actions')),
             'is_paid?' => $this->property()->default(false)
         ];
     }

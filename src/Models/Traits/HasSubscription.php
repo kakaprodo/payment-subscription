@@ -60,18 +60,34 @@ trait HasSubscription
     }
 
     /**
-     * Add a single item to subscription
+     * Add a consumption item to the subscription.
      */
-    public function addSubscriptionConsumption(array $options)
+    public function addSubscriptionItem(array $item)
     {
-        return PaymentSub::consumption()->create($this, $options);
+        return PaymentSub::consumption()->create($this, $item);
     }
 
     /**
-     * Add many single item to subscription
+     * Add multiple consumption items to the subscription.
      */
-    public function addManySubscriptionConsumptions(array $options)
+    public function addManySubscriptionItems(array $items)
     {
-        return PaymentSub::consumption()->createMany($this, $options);
+        return PaymentSub::consumption()->createMany($this, $items);
+    }
+
+    /**
+     * Remove specific or all consumption items from the subscription.
+     */
+    public function removeSubscriptionItems(array $consumptionIds = [])
+    {
+        return PaymentSub::consumption()->delete($this, $consumptionIds);
+    }
+
+    /**
+     * Set some or all consumptions of a given model's subscription as paid.
+     */
+    public function paySubscriptionItems(array $consumptionIds = [])
+    {
+        return PaymentSub::consumption()->pay($this, $consumptionIds);
     }
 }

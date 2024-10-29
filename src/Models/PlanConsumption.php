@@ -27,6 +27,16 @@ class PlanConsumption extends Model
         return config('payment-subscription.tables.consumptions');
     }
 
+    public function scopePaid($q)
+    {
+        return $q->where('is_paid', true);
+    }
+
+    public function scopeNotPaid($q)
+    {
+        return $q->where('is_paid', false);
+    }
+
     public function subscription()
     {
         return $this->belongsTo(Subscription::class);

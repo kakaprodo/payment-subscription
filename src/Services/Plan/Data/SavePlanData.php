@@ -24,6 +24,8 @@ class SavePlanData extends BaseData
                     fn($plan) => is_string($plan) && $plan ? PaymentPlan::getOrFail($plan) : $plan
                 ),
             'name' => $this->property()->string(),
+            'sub_title?' => $this->property()->string(),
+            'price_format?' => $this->property()->string(),
             'slug' => $this->property()->string(),
             'initial_cost' => $this->property()->number(0),
             'description?' => $this->property()->string(),

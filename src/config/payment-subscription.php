@@ -86,6 +86,8 @@ return [
             // Example: Define a free or base subscription plan here.
             // [
             //     'name' => 'Free Plan',
+            //     'sub_title' => null,
+            //     'price_format' => null,
             //     'slug' => 'free-plan',
             //     'initial_cost' => 0,
             //     'description' => 'For single personal or a very small business',
