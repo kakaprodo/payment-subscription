@@ -2,8 +2,10 @@
 
 namespace Kakaprodo\PaymentSubscription\Services\Plan;
 
+use Illuminate\Support\Collection;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 use Kakaprodo\PaymentSubscription\Services\Base\ServiceBase;
+use Kakaprodo\PaymentSubscription\Services\Plan\Data\AllPlanData;
 use Kakaprodo\PaymentSubscription\Services\Plan\Action\CreatePlanAction;
 use Kakaprodo\PaymentSubscription\Services\Plan\Action\UpdatePlanAction;
 use Kakaprodo\PaymentSubscription\Services\Plan\Action\CreateManyPlanAction;
@@ -11,6 +13,14 @@ use Kakaprodo\PaymentSubscription\Services\Plan\Action\AddFeaturesToPlanAction;
 
 class PlanService extends ServiceBase
 {
+    /**
+     * All supported payment plans each with its related features
+     */
+    public function all(array $filterOptions = []): Collection
+    {
+        return AllPlanData::make($this->inputs($filterOptions))->plans();;
+    }
+
     public function create(array $options): PaymentPlan
     {
         return CreatePlanAction::process($this->inputs($options));
