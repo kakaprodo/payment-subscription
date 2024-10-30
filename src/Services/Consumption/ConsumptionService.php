@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\Models\PlanConsumption;
 use Kakaprodo\PaymentSubscription\Services\Base\ServiceBase;
 use Kakaprodo\PaymentSubscription\Services\Consumption\Action\PayConsumptionAction;
+use Kakaprodo\PaymentSubscription\Services\Consumption\Data\ShortConsumptionListData;
 use Kakaprodo\PaymentSubscription\Services\Consumption\Action\CreateConsumptionAction;
 use Kakaprodo\PaymentSubscription\Services\Consumption\Action\DeleteConsumptionAction;
 use Kakaprodo\PaymentSubscription\Services\Consumption\Action\CreateManyConsumptionAction;
@@ -58,5 +59,16 @@ class ConsumptionService extends ServiceBase
         ]));
 
         return true;
+    }
+
+    /**
+     * Get list of conumption items grouped by action
+     */
+    public function groupedList(Model $subscriber, array $filterOptions = []): array
+    {
+        return ShortConsumptionListData::make($this->inputs([
+            'subscriber' => $subscriber,
+            ...$filterOptions
+        ]))->items();
     }
 }

@@ -90,4 +90,13 @@ trait HasSubscription
     {
         return PaymentSub::consumption()->pay($this, $consumptionIds);
     }
+
+    /**
+     * List all consumptions grouped by actions with posibility to filter
+     * by all, paid or not paid consumptions
+     */
+    public function listGroupedSubscriptionItems(array $filterOptions = []): array
+    {
+        return PaymentSub::consumption()->groupedList($this, $filterOptions);
+    }
 }

@@ -97,11 +97,9 @@ return [
         'features' => [
             // Example: Define individual features, such as organization limits.
             // [
-            //     'name' => 'Number Organizations(Spaces): 1',
+            //     'name' => 'Number Organizations: 1',
             //     'slug' => 'number-organization',
             //     'slug_value' => 1,
-            //     'cost' => 0,
-            //     'unit' => null,
             //     'description' => 'Will have right to the default organization only.',
             // ],
         ],
