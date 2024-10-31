@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\Models\Discount;
 use Kakaprodo\PaymentSubscription\Models\Subscription;
 use Kakaprodo\PaymentSubscription\Services\Base\ServiceBase;
+use Kakaprodo\PaymentSubscription\Services\Subscripion\Data\SubscriptionCostData;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\Action\CreateSubscriptionAction;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\Action\ChangeSubscriptionStatusAction;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\Action\ToggleSubscriptionDiscountAction;
@@ -73,5 +74,16 @@ class SubscripionService extends ServiceBase
             'subscriber' => $subscriber,
             'status' => $status
         ]);
+    }
+
+    /**
+     * Gate to subscription cost calculation
+     */
+    public function cost(Model $subscriber, array $filterOptions = []): SubscriptionCostData
+    {
+        return SubscriptionCostData::make($this->inputs([
+            'subscriber' => $subscriber,
+            ...$filterOptions
+        ]));
     }
 }

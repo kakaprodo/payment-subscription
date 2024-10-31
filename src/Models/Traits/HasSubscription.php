@@ -2,10 +2,11 @@
 
 namespace Kakaprodo\PaymentSubscription\Models\Traits;
 
+use Kakaprodo\PaymentSubscription\PaymentSub;
 use Kakaprodo\PaymentSubscription\Models\Discount;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 use Kakaprodo\PaymentSubscription\Models\Subscription;
-use Kakaprodo\PaymentSubscription\PaymentSub;
+use Kakaprodo\PaymentSubscription\Services\Subscripion\Data\SubscriptionCostData;
 
 trait HasSubscription
 {
@@ -27,6 +28,14 @@ trait HasSubscription
     {
         return $this->morphOne(Subscription::class, 'subscriptionable')
             ->when($loadWith, fn($q) => $q->with(['plan', 'discount']));
+    }
+
+    /**
+     * Gat to 
+     */
+    public function subscriptionCost(array $filterOptions = []): SubscriptionCostData
+    {
+        return PaymentSub::subscription()->cost($this, $filterOptions);
     }
 
     /**

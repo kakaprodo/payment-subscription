@@ -5,7 +5,6 @@ namespace Kakaprodo\PaymentSubscription\Services\Consumption\Data;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Kakaprodo\PaymentSubscription\Helpers\Util;
-use Kakaprodo\PaymentSubscription\Models\PlanConsumption;
 use Kakaprodo\PaymentSubscription\Models\Subscription;
 use Kakaprodo\PaymentSubscription\Services\Base\Data\BaseData;
 use Kakaprodo\PaymentSubscription\Models\Traits\HasSubscription;
@@ -13,6 +12,8 @@ use Kakaprodo\PaymentSubscription\Models\Traits\HasSubscription;
 /**
  * @property HasSubscription $subscriber
  * @property Subscription $subscription
+ * @property bool $is_paid
+ * @property bool $all
  */
 class ShortConsumptionListData extends BaseData
 {
@@ -42,15 +43,28 @@ class ShortConsumptionListData extends BaseData
             ->get();
     }
 
-    public function items()
+    protected function shortList()
     {
-        $actionItems =  $this->getConsumptionItems()
+        return  $this->getConsumptionItems()
             ->groupBy("action")
             ->map(function (Collection $consumptions) {
                 return $consumptions->groupBy("description")
                     ->map(fn(Collection $actionItems) => $actionItems->sum('price'))
                     ->all();
             });
-        return $actionItems->all();
+    }
+
+    public function items(): array
+    {
+        $shortList =  $this->shortList();
+
+        $totalCost = $shortList->sum(function ($actionItems) {
+            return collect($actionItems)->sum();
+        });
+
+        return [
+            'total' =>  $totalCost,
+            'list' => $shortList->all()
+        ];
     }
 }
