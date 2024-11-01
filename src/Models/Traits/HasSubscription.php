@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\PaymentSubscription\Models\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\PaymentSub;
 use Kakaprodo\PaymentSubscription\Models\Discount;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
@@ -107,5 +108,37 @@ trait HasSubscription
     public function listGroupedSubscriptionItems(array $filterOptions = []): array
     {
         return PaymentSub::consumption()->groupedList($this, $filterOptions);
+    }
+
+    /**
+     * Activate a given activable feature on a the model's subscription 
+     * 
+     * @param string|Discount $discount
+     * @param ?Model $activable
+     */
+    public function activateSubscriptionFeature($feature, ?Model $activable = null)
+    {
+        return PaymentSub::subscription()->toggleFeatureActivation(
+            $this,
+            $feature,
+            $activable,
+            true
+        );
+    }
+
+    /**
+     * Disable a given activable feature on a the model's subscription 
+     * 
+     * @param string|Discount $discount
+     * @param ?Model $activable
+     */
+    public function disableSubscriptionFeature($feature, ?Model $activable = null)
+    {
+        return PaymentSub::subscription()->toggleFeatureActivation(
+            $this,
+            $feature,
+            $activable,
+            false
+        );
     }
 }

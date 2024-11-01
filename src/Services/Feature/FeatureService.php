@@ -62,4 +62,18 @@ class FeatureService extends ServiceBase
 
         return $feature->delete();
     }
+
+    /**
+     * Turn on/of the consideration of a feature as activable
+     * 
+     * @param Feature|string $feature
+     */
+    public function toggleActivable($feature): Feature
+    {
+        $feature = Feature::getOrFail($feature);
+
+        $feature->activable = $feature->activable ? false : true;
+        $feature->save();
+        return  $feature;
+    }
 }

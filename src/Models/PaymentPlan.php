@@ -18,7 +18,6 @@ class PaymentPlan extends Model
         'description',
         'slug',
         'name',
-        'has_pay_as_you_go',
         'is_free'
     ];
 

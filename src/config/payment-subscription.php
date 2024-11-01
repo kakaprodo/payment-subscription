@@ -17,6 +17,7 @@ return [
     | - 'feature_plan': Pivot table to manage many-to-many relationships between
     |    plans and features.
     | - 'discount': Stores discount types for subscriptions.
+    | - `feature_subscription`: Stores activated feature on specific subscription
     |
     */
 
@@ -26,7 +27,8 @@ return [
         'consumptions' => 'ps_plan_consumptions',
         'subscriptions' => 'ps_subscriptions',
         'feature_plan' => 'ps_feature_plan',
-        'discount' => 'ps_discounts'
+        'discount' => 'ps_discounts',
+        'feature_subscription' => 'ps_feature_subscription'
     ],
 
     /*
@@ -100,6 +102,8 @@ return [
             //     'name' => 'Number Organizations: 1',
             //     'slug' => 'number-organization',
             //     'slug_value' => 1,
+            //     'activable' => false,
+            //     'cost' => 0
             //     'description' => 'Will have right to the default organization only.',
             // ],
         ],

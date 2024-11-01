@@ -16,9 +16,9 @@ class Feature extends Model
     protected $fillable = [
         'name',
         'slug',
-        'unit',
         'description',
         'slug_value',
+        'activable',
         'cost'
     ];
 

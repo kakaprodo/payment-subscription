@@ -4,10 +4,12 @@ namespace Kakaprodo\PaymentSubscription\Services\Subscripion;
 
 use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\Models\Discount;
+use Kakaprodo\PaymentSubscription\Models\Feature;
 use Kakaprodo\PaymentSubscription\Models\Subscription;
 use Kakaprodo\PaymentSubscription\Services\Base\ServiceBase;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\Data\SubscriptionCostData;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\Action\CreateSubscriptionAction;
+use Kakaprodo\PaymentSubscription\Services\Subscripion\Action\ToggleFeatureActivationAction;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\Action\ChangeSubscriptionStatusAction;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\Action\ToggleSubscriptionDiscountAction;
 
@@ -84,6 +86,28 @@ class SubscripionService extends ServiceBase
         return SubscriptionCostData::make($this->inputs([
             'subscriber' => $subscriber,
             ...$filterOptions
+        ]));
+    }
+
+    /**
+     * Activate a given feature to a subscription
+     * 
+     * @param Model $subscriber
+     * @param string|Feature $feature
+     * @param ?Model $activable
+     * @param bool $activating
+     */
+    public function toggleFeatureActivation(
+        Model $subscriber,
+        $feature,
+        ?Model $activable = null,
+        $activating = true
+    ): bool {
+        return ToggleFeatureActivationAction::process($this->inputs([
+            'subscriber' => $subscriber,
+            'feature' =>  $feature,
+            'activable' => $activable,
+            'activating' => $activating
         ]));
     }
 }

@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Kakaprodo\PaymentSubscription\Models\Feature;
-use Kakaprodo\PaymentSubscription\Models\FeaturePlan;
-use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
+use Kakaprodo\PaymentSubscription\Models\FeatureSubscripion;
+use Kakaprodo\PaymentSubscription\Models\Subscription;
 
 return new class extends Migration
 {
@@ -16,10 +16,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create((new FeaturePlan())->getTable(), function (Blueprint $table) {
+        Schema::create((new FeatureSubscripion())->getTable(), function (Blueprint $table) {
             $table->id();
             $table->foreignId('feature_id')->constrained((new Feature())->getTable());
-            $table->foreignId('plan_id')->constrained((new PaymentPlan())->getTable());
+            $table->foreignId('subscription_id')->constrained((new Subscription())->getTable());
+            $table->string('activable_type')->nullable()->comment('Entity type on which a feature is activated');
+            $table->bigInteger('activable_id')->nullable()->comment('Entity id on which a feature is activated');
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists((new FeaturePlan())->getTable());
+        Schema::dropIfExists((new FeatureSubscripion())->getTable());
     }
 };

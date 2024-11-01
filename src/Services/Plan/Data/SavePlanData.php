@@ -29,7 +29,6 @@ class SavePlanData extends BaseData
             'slug' => $this->property()->string(),
             'initial_cost' => $this->property()->number(0),
             'description?' => $this->property()->string(),
-            'has_pay_as_you_go?' => $this->property()->bool(false),
             'is_free' => $this->property()->bool(false),
         ];
     }

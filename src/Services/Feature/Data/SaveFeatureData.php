@@ -22,7 +22,7 @@ class SaveFeatureData extends BaseData
             'slug' => $this->property()->string(),
             'slug_value?' => $this->property()->string(),
             'cost' => $this->property()->number(0),
-            'unit?' => $this->property()->string(),
+            'activable?' => $this->property()->bool(false),
             'description?' => $this->property()->string(),
         ];
     }

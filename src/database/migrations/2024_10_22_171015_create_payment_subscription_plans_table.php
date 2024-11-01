@@ -22,7 +22,6 @@ return new class extends Migration
             $table->decimal('initial_cost', 8, 2)->default(0);
             $table->string('description')->nullable();
             $table->string('slug');
-            $table->boolean('has_pay_as_you_go')->default(false);
             $table->boolean('is_free')->default(false);
             $table->softDeletes();
             $table->timestamps();
