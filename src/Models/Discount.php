@@ -4,9 +4,11 @@ namespace Kakaprodo\PaymentSubscription\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Kakaprodo\PaymentSubscription\Models\Traits\HasEntityShareable;
 
 class Discount extends Model
 {
+    use HasEntityShareable;
     protected $fillable = [
         'percentage',
         'description',

@@ -6,12 +6,13 @@ use Kakaprodo\PaymentSubscription\Services\Plan\PlanService;
 use Kakaprodo\PaymentSubscription\Services\Feature\FeatureService;
 use Kakaprodo\PaymentSubscription\Services\Discount\DiscountService;
 use Kakaprodo\PaymentSubscription\Services\Consumption\ConsumptionService;
+use Kakaprodo\PaymentSubscription\Services\Subscripion\SubscripionService;
 
 /**
  * The payment sibscription gate
  * @property PlanService $plan
  * @property FeatureService $feature
- * @property ConsumptionService $consumption
+ * @property SubscripionService $subscription
  * @property DiscountService $discount
  */
 class PaymentSub
@@ -19,14 +20,15 @@ class PaymentSub
     static $services = [
         'plan' => PlanService::class,
         'feature' => FeatureService::class,
-        'consumption' => ConsumptionService::class,
+        'subscription' => SubscripionService::class,
         'discount' => DiscountService::class,
+        'consumption' => ConsumptionService::class,
     ];
 
     /**
      * A gate to plan service
      */
-    public static function plan()
+    public static function plan(): PlanService
     {
         return (new self())->plan;
     }
@@ -35,25 +37,33 @@ class PaymentSub
     /**
      * A gate to feature service
      */
-    public static function feature()
+    public static function feature(): FeatureService
     {
         return (new self())->feature;
     }
 
     /**
-     * A gate to plan consumption service
+     * A gate to plan subscription service
      */
-    public static function consumption()
+    public static function subscription(): SubscripionService
     {
-        return (new self())->consumption;
+        return (new self())->subscription;
     }
 
     /**
      * A gate to plan discount service
      */
-    public static function discount()
+    public static function discount(): DiscountService
     {
         return (new self())->discount;
+    }
+
+    /**
+     * A gate to plan discount service
+     */
+    public static function consumption(): ConsumptionService
+    {
+        return (new self())->consumption;
     }
 
     /**

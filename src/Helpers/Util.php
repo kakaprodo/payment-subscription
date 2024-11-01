@@ -2,19 +2,16 @@
 
 namespace Kakaprodo\PaymentSubscription\Helpers;
 
+use Kakaprodo\PaymentSubscription\Exceptions\EntityMissesExpectedTrait;
+
 class Util
 {
-    /**
-     * get the name of an object class or of class-path
-     */
-    public static function className($myClass)
+    public static function forceClassTrait(string $trait, $object_or_class)
     {
-        if (!$myClass) return null;
+        if (!in_array($trait, class_uses($object_or_class))) {
+            throw new EntityMissesExpectedTrait("The model " . class_basename($object_or_class) . " is missing the trait {$trait}");
+        }
 
-        $myClass = is_string($myClass) ? $myClass : get_class($myClass);
-
-        $splitedClass = explode('/', str_replace('\\', '/', $myClass));
-
-        return collect($splitedClass)->last();
+        return true;
     }
 }

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->morphs('subscriptionable'); // Creates subscriptionable_id and subscriptionable_type
             $table->foreignId('plan_id')->constrained((new PaymentPlan())->getTable());
             $table->integer('discount_id')->nullable()->constrained((new Discount())->getTable());
+            $table->string('status')->default(config('payment-subscription.status')[0] ?? 'active');
             $table->timestamps();
         });
     }
