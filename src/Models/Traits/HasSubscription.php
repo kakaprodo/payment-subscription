@@ -7,10 +7,13 @@ use Kakaprodo\PaymentSubscription\PaymentSub;
 use Kakaprodo\PaymentSubscription\Models\Discount;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 use Kakaprodo\PaymentSubscription\Models\Subscription;
+use Kakaprodo\PaymentSubscription\Models\Traits\HasSubscriptionControl;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\Data\SubscriptionCostData;
 
 trait HasSubscription
 {
+
+    use HasSubscriptionControl;
 
     /**
      * Connect a given subscription plan to the current model

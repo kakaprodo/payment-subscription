@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\PaymentSubscription\Services\Subscripion\Data;
 
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\Helpers\Util;
 use Kakaprodo\PaymentSubscription\Models\Discount;
@@ -30,6 +31,16 @@ class SubscriptionCostData extends BaseData
      */
     protected $shortConsumptionList = [];
 
+    /**
+     * Amount from activated feature
+     */
+    protected $totalActivatedFeature = 0;
+
+    /**
+     * items details of activated feature for the subscription
+     */
+    protected $activatedFeatureItems = [];
+
     protected function expectedProperties(): array
     {
         return [
@@ -46,7 +57,24 @@ class SubscriptionCostData extends BaseData
     {
         $this->plan = $this->subscription->plan;
         $this->discount = $this->subscription->discount_id ? $this->subscription->discount : null;
+
+        // load cost from consumptions list
         $this->shortConsumptionList();
+
+        // load cost from activated features
+        $this->loadActivatedFeatureCost();
+    }
+
+    public function loadActivatedFeatureCost()
+    {
+        $activatedFeatures =  $this->subscription->activated_features;
+
+        $this->activatedFeatureItems = $activatedFeatures->groupBy('name')
+            ->map(fn(Collection $features) => $features->sum('cost'))
+            ->filter(fn($featureCost) => $featureCost > 0)
+            ->all();
+
+        $this->totalActivatedFeature =  $activatedFeatures->sum('cost');
     }
 
     /**
@@ -69,7 +97,11 @@ class SubscriptionCostData extends BaseData
     public function netCost()
     {
         $initialCost = $this->plan->is_free ? 0 : $this->plan->initial_cost;
-        $cost = ($this->shortConsumptionList['total'] ?? 0) +  $initialCost;
+
+        $cost = ($this->shortConsumptionList['total'] ?? 0)
+            +  $initialCost
+            +  $this->totalActivatedFeature;
+
         $this->discountAmount =  round($this->discount ? (($cost * $this->discount->percentage) / 100) : 0, 2);
 
         return $cost - $this->discountAmount;
@@ -83,6 +115,7 @@ class SubscriptionCostData extends BaseData
         $netCost = $this->netCost();
         return [
             'consumptions' => $this->shortConsumptionList['list'] ?? [],
+            'activated_functionalities' => $this->activatedFeatureItems,
             'discounts' => ($this->discount ? ["{$this->discount->description} {$this->discount->percentage}%" => $this->discountAmount] : []),
             'net_cost' =>  $netCost
         ];

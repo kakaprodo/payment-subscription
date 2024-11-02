@@ -61,10 +61,31 @@ return [
         'expired',
         'canceled'
     ],
-    /**
-     * supported actions for subscription consumptions
-     */
+
+    /*
+    |--------------------------------------------------------------------------
+    | Subscription consumption Actions
+    |--------------------------------------------------------------------------
+    |
+    | Register all supported subscription consumptions actions within your system. 
+    | These action can be used to identifier the group of consumption
+    |
+    */
     'consumption_actions' => [],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Subscription Control
+    |--------------------------------------------------------------------------
+    |
+    | On this section, you can manage whether permissions result of subscripion
+    | checking should be cached or not
+    |
+    */
+    'control' => [
+        'cache' => true,
+        'cache_period_in_second' => 60,
+    ],
 
     /*
     |--------------------------------------------------------------------------
