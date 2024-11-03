@@ -5,6 +5,7 @@ namespace Kakaprodo\PaymentSubscription;
 use Illuminate\Support\ServiceProvider;
 use Kakaprodo\PaymentSubscription\Commands\SeedDataCommand;
 use Kakaprodo\PaymentSubscription\Commands\ConfigInstallCommand;
+use Kakaprodo\PaymentSubscription\Commands\DetectExpiredSubscriptionCommand;
 
 class PaymentSubscriptionServiceProvider extends ServiceProvider
 {
@@ -39,7 +40,8 @@ class PaymentSubscriptionServiceProvider extends ServiceProvider
     {
         $this->commands([
             ConfigInstallCommand::class,
-            SeedDataCommand::class
+            SeedDataCommand::class,
+            DetectExpiredSubscriptionCommand::class
         ]);
     }
 

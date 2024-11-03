@@ -28,10 +28,9 @@ trait HasSubscription
     /**
      * the subscription plan of the current model
      */
-    public function subscription($loadWith = true)
+    public function subscription()
     {
-        return $this->morphOne(Subscription::class, 'subscriptionable')
-            ->when($loadWith, fn($q) => $q->with(['plan', 'discount']));
+        return $this->morphOne(Subscription::class, 'subscriptionable');
     }
 
     /**
@@ -143,5 +142,15 @@ trait HasSubscription
             $activable,
             false
         );
+    }
+
+    /**
+     * Add more days/one-month to the expiration time of a subscription
+     * 
+     * @param DateTime|string|Illuminate\Support\Carbon $period
+     */
+    public function extendSubscriptionPeriod($period = null): Subscription
+    {
+        return PaymentSub::subscription()->extendExpirationPeriod($this, $period);
     }
 }

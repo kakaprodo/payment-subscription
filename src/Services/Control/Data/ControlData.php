@@ -5,6 +5,7 @@ namespace Kakaprodo\PaymentSubscription\Services\Control\Data;
 use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\Helpers\Util;
 use Kakaprodo\PaymentSubscription\Models\Feature;
+use Kakaprodo\PaymentSubscription\Models\FeaturePlan;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 use Kakaprodo\PaymentSubscription\Models\Subscription;
 use Kakaprodo\PaymentSubscription\Services\Base\Data\BaseData;
@@ -29,7 +30,7 @@ class ControlData extends BaseData
             'should_cache?' => $this->property()->bool(
                 config('payment-subscription.control.cache', true)
             ),
-            'cache_period?' => $this->property()->bool(
+            'cache_period?' => $this->property()->number(
                 config('payment-subscription.control.cache_period_in_second', 60)
             ),
 
@@ -99,8 +100,8 @@ class ControlData extends BaseData
             $this->should_cache,
             "sp-{$this->subscription->id}-has-feature-{$this->feature->id}",
             function () {
-                $hasFeature = Feature::where('plan_id', $this->subscription->plan_id)
-                    ->where('id', $this->feature->id)
+                $hasFeature = FeaturePlan::where('plan_id', $this->subscription->plan_id)
+                    ->where('feature_id', $this->feature->id)
                     ->exists();
 
                 return $hasFeature ? true : $this->hasFeatureActivated();
@@ -122,13 +123,14 @@ class ControlData extends BaseData
             $this->should_cache,
             "sp-{$this->subscription->id}-has-active-feature-{$this->feature->id}-on-{$onEntity}",
             function () {
-                return $this->subscription->activated_features()
-                    ->where('id', $this->feature->id)
-                    ->when(
-                        $this->activable,
-                        fn($q) => $q->wherePivot('activable_id', $this->activable->id)
-                            ->wherePivot('activable_type', get_class($this->activable))
-                    )->exists();
+                $query = $this->subscription->activated_features()
+                    ->where((new Feature())->getTable() . '.id', $this->feature->id);
+
+                if ($this->activable) {
+                    $query->wherePivot('activable_id', $this->activable->id)
+                        ->wherePivot('activable_type', get_class($this->activable));
+                }
+                return $query->exists();
             },
             now()->addSeconds($this->cache_period)
         );

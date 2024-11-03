@@ -15,13 +15,16 @@ class CreateSubscriptionAction extends CustomActionBuilder
         if ($existingSubscription) {
             $existingSubscription->plan_id = $data->plan->id;
             $existingSubscription->discount_id = $data->discount?->id;
+            $existingSubscription->expired_at = $data->expired_at;
+
             $existingSubscription->save();
             return $existingSubscription;
         }
 
-        return $data->subscriber->subscription(false)->create([
+        return $data->subscriber->subscription()->create([
             'plan_id' => $data->plan->id,
-            'discount_id' => $data->discount?->id
+            'discount_id' => $data->discount?->id,
+            'expired_at' => $data->expired_at
         ]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+use Kakaprodo\PaymentSubscription\Models\Subscription;
+
 return [
 
     /*
@@ -53,14 +55,11 @@ return [
     |
     | Register all supported subscription statuses within your system. These
     | statuses can be used to track the state of each subscription.
-    |
+    | These are the required ones:
+    | 'active', 'expired','canceled'
     */
 
-    'status' => [
-        'active',
-        'expired',
-        'canceled'
-    ],
+    'status' => Subscription::$supportedStatus,
 
     /*
     |--------------------------------------------------------------------------

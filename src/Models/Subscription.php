@@ -15,9 +15,19 @@ class Subscription extends Model
         'subscriptionable_type',
         'plan_id',
         'discount_id',
-        'status'
+        'status',
+        'expired_at',
     ];
 
+    const STATUS_ACTIVE = 'active';
+    const STATUS_EXPIRED = 'expired';
+    const STATUS_CANCELED = 'canceled';
+
+    static $supportedStatus = [
+        self::STATUS_ACTIVE,
+        self::STATUS_EXPIRED,
+        self::STATUS_CANCELED
+    ];
     /**
      * Get the table associated with the model.
      *

@@ -17,7 +17,7 @@ class ControlService extends ServiceBase
      * @param Model $subscriber
      * @param string|PaymentPlan $plan
      */
-    public function hasPlan(Model $subscriber, $plan)
+    public function hasPlan(Model $subscriber, $plan): bool
     {
         return ControlData::make([
             'subscriber' => $subscriber,
