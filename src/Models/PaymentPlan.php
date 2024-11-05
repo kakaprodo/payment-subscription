@@ -14,10 +14,12 @@ class PaymentPlan extends Model
     use SoftDeletes, HasEntityShareable;
 
     protected $fillable = [
+        'name',
+        'sub_title',
+        'price_format',
         'initial_cost',
         'description',
         'slug',
-        'name',
         'is_free'
     ];
 

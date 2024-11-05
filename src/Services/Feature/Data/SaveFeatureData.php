@@ -18,12 +18,12 @@ class SaveFeatureData extends BaseData
                 ->castTo(
                     fn($feature) => is_string($feature) && $feature ? Feature::getOrFail($feature) : $feature
                 ),
-            'name' => $this->property()->string(),
-            'slug' => $this->property()->string(),
-            'slug_value?' => $this->property()->string(),
-            'cost' => $this->property()->number(0),
-            'activable?' => $this->property()->bool(false),
-            'description?' => $this->property()->string(),
+            'name' => $this->property()->string($this->feature?->name),
+            'slug' => $this->property()->string($this->feature?->slug),
+            'slug_value?' => $this->property()->string($this->feature?->slug_value),
+            'cost' => $this->property()->number($this->feature?->cost ?? 0),
+            'activable?' => $this->property()->bool($this->feature?->activable ?? false),
+            'description?' => $this->property()->string($this->feature?->description),
         ];
     }
 }

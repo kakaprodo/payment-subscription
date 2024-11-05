@@ -32,7 +32,7 @@ class CreateSubscriptionData extends BaseData
                 ->castTo(
                     fn($discount) => is_string($discount) ? Discount::getOrFail($discount) : $discount
                 ),
-            'expired_at?' => $this->property()->castTo(fn() => now()->addMonth())
+            'expired_at?' => $this->property()->castTo(fn($expiredAt) => $expiredAt ?? now()->addMonth())
         ];
     }
 }

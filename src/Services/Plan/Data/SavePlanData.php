@@ -23,13 +23,13 @@ class SavePlanData extends BaseData
                 ->castTo(
                     fn($plan) => is_string($plan) && $plan ? PaymentPlan::getOrFail($plan) : $plan
                 ),
-            'name' => $this->property()->string(),
-            'sub_title?' => $this->property()->string(),
-            'price_format?' => $this->property()->string(),
-            'slug' => $this->property()->string(),
-            'initial_cost' => $this->property()->number(0),
-            'description?' => $this->property()->string(),
-            'is_free' => $this->property()->bool(false),
+            'name' => $this->property()->string($this->plan?->name),
+            'sub_title?' => $this->property()->string($this->plan?->sub_title),
+            'price_format?' => $this->property()->string($this->plan?->price_format),
+            'slug' => $this->property()->string($this->plan?->slug),
+            'initial_cost' => $this->property()->number($this->plan?->initial_cost ?? 0),
+            'description?' => $this->property()->string($this->plan?->description),
+            'is_free' => $this->property()->bool($this->plan?->is_free ?? false),
         ];
     }
 }

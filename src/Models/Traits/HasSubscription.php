@@ -19,10 +19,11 @@ trait HasSubscription
      * Connect a given subscription plan to the current model
      * 
      * @param string|PaymentPlan $plan
+     * @param array $options
      */
-    public function createSubscription($plan): Subscription
+    public function subscribe($plan, array $options = []): Subscription
     {
-        return PaymentSub::subscription()->create($this, $plan);
+        return PaymentSub::subscription()->create($this, $plan, $options);
     }
 
     /**
@@ -34,7 +35,7 @@ trait HasSubscription
     }
 
     /**
-     * Gat to 
+     * Calculate a subscription cost of the subscriber model
      */
     public function subscriptionCost(array $filterOptions = []): SubscriptionCostData
     {
