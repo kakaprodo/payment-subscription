@@ -3,15 +3,18 @@
 namespace Kakaprodo\PaymentSubscription\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
+use Kakaprodo\PaymentSubscription\Models\Traits\HasEntityShareable;
 
 class PlanConsumption extends Model
 {
+    use HasEntityShareable;
+
     protected $fillable = [
-        'plan_id',
+        'subscription_id',
         'description',
         'action',
         'price',
+        'is_paid'
     ];
 
     /**
@@ -21,11 +24,21 @@ class PlanConsumption extends Model
      */
     public function getTable()
     {
-        return config('payment-subscription.database.consumptions');
+        return config('payment-subscription.tables.consumptions');
     }
 
-    public function plan()
+    public function scopePaid($q)
     {
-        return $this->belongsTo(PaymentPlan::class, 'plan_id');
+        return $q->where('is_paid', true);
+    }
+
+    public function scopeNotPaid($q)
+    {
+        return $q->where('is_paid', false);
+    }
+
+    public function subscription()
+    {
+        return $this->belongsTo(Subscription::class);
     }
 }

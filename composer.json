@@ -12,9 +12,9 @@
         "kakaprodo"
     ],
     "require": {
-        "php": ">=7.3",
-        "laravel/framework": ">=7.0",
-        "kakaprodo/custom-data": ">=2.3.3"
+        "php": ">=8.0",
+        "laravel/framework": ">=8.0",
+        "kakaprodo/custom-data": ">=2.3.3 || dev-develop"
     },
     "autoload": {
         "psr-4": {

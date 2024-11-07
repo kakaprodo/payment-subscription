@@ -3,8 +3,11 @@
 namespace Kakaprodo\PaymentSubscription;
 
 use Illuminate\Support\ServiceProvider;
+use Kakaprodo\PaymentSubscription\Commands\SeedDataCommand;
+use Kakaprodo\PaymentSubscription\Commands\ConfigInstallCommand;
+use Kakaprodo\PaymentSubscription\Commands\DetectExpiredSubscriptionCommand;
 
-class CustomDataServiceProvider extends ServiceProvider
+class PaymentSubscriptionServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -26,7 +29,7 @@ class CustomDataServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (!$this->app->runningInConsole()) {
+        if ($this->app->runningInConsole()) {
             $this->registerCommands();
             $this->stackToPublish();
             $this->stackToLoad();
@@ -35,7 +38,11 @@ class CustomDataServiceProvider extends ServiceProvider
 
     protected function registerCommands()
     {
-        $this->commands([]);
+        $this->commands([
+            ConfigInstallCommand::class,
+            SeedDataCommand::class,
+            DetectExpiredSubscriptionCommand::class
+        ]);
     }
 
 
@@ -48,7 +55,8 @@ class CustomDataServiceProvider extends ServiceProvider
 
     protected function stackToLoad()
     {
-        if (config('database.migration.should_run')) {
+
+        if (config('payment-subscription.migrations.should_run')) {
             $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         }
     }

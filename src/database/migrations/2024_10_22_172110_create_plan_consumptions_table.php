@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 use Kakaprodo\PaymentSubscription\Models\PlanConsumption;
+use Kakaprodo\PaymentSubscription\Models\Subscription;
 
 return new class extends Migration
 {
@@ -17,10 +18,11 @@ return new class extends Migration
     {
         Schema::create((new PlanConsumption())->getTable(), function (Blueprint $table) {
             $table->id();
-            $table->foreignId('plan_id')->constrained((new PaymentPlan())->getTable());
+            $table->foreignId('subscription_id')->constrained((new Subscription())->getTable());
             $table->string('description')->nullable();
-            $table->string('action');
+            $table->string('action')->nullable();
             $table->decimal('price', 8, 2);
+            $table->boolean('is_paid')->default(false);
             $table->timestamps();
         });
     }

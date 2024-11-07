@@ -3,18 +3,23 @@
 namespace Kakaprodo\PaymentSubscription\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Kakaprodo\PaymentSubscription\Models\FeaturePlan;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Kakaprodo\PaymentSubscription\Models\Traits\HasEntityShareable;
 
 class Feature extends Model
 {
+    use SoftDeletes,
+        HasEntityShareable;
+
     protected $fillable = [
         'name',
         'slug',
-        'cost',
-        'unit',
-        'plan_id',
         'description',
-        'is_pay_as_you_go',
+        'slug_value',
+        'activable',
+        'cost'
     ];
 
     /**
@@ -24,11 +29,16 @@ class Feature extends Model
      */
     public function getTable()
     {
-        return config('payment-subscription.database.feature');
+        return config('payment-subscription.tables.feature');
     }
 
-    public function plan()
+    public function plans(): BelongsToMany
     {
-        return $this->belongsTo(PaymentPlan::class, 'plan_id');
+        return $this->belongsToMany(
+            PaymentPlan::class,
+            (new FeaturePlan)->getTable(),
+            'feature_id',
+            'plan_id',
+        );
     }
 }

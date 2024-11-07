@@ -1,16 +1,11 @@
 <?php
 
-namespace Kakaprodo\CustomData\Command;
+namespace Kakaprodo\PaymentSubscription\Commands;
 
 use Illuminate\Console\Command;
 
 class ConfigInstallCommand extends Command
 {
-    protected $hidden = true;
-
-    /**
-     * type can be: BarChart, CardCoun, List, PieChart
-     */
     protected $signature = 'payment-subscription:install {--force}';
 
     protected $description = 'Generate the configuration file of the package';

@@ -18,7 +18,7 @@ return new class extends Migration
     {
         Schema::create((new FeaturePlan())->getTable(), function (Blueprint $table) {
             $table->id();
-            $table->string('feature_id')->constrained((new Feature())->getTable());
+            $table->foreignId('feature_id')->constrained((new Feature())->getTable());
             $table->foreignId('plan_id')->constrained((new PaymentPlan())->getTable());
             $table->timestamps();
         });
