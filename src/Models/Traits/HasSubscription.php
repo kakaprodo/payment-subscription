@@ -7,32 +7,35 @@ use Kakaprodo\PaymentSubscription\PaymentSub;
 use Kakaprodo\PaymentSubscription\Models\Discount;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 use Kakaprodo\PaymentSubscription\Models\Subscription;
+use Kakaprodo\PaymentSubscription\Models\Traits\HasSubscriptionControl;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\Data\SubscriptionCostData;
 
 trait HasSubscription
 {
 
+    use HasSubscriptionControl;
+
     /**
      * Connect a given subscription plan to the current model
      * 
      * @param string|PaymentPlan $plan
+     * @param array $options
      */
-    public function createSubscription($plan): Subscription
+    public function subscribe($plan, array $options = []): Subscription
     {
-        return PaymentSub::subscription()->create($this, $plan);
+        return PaymentSub::subscription()->create($this, $plan, $options);
     }
 
     /**
      * the subscription plan of the current model
      */
-    public function subscription($loadWith = true)
+    public function subscription()
     {
-        return $this->morphOne(Subscription::class, 'subscriptionable')
-            ->when($loadWith, fn($q) => $q->with(['plan', 'discount']));
+        return $this->morphOne(Subscription::class, 'subscriptionable');
     }
 
     /**
-     * Gat to 
+     * Calculate a subscription cost of the subscriber model
      */
     public function subscriptionCost(array $filterOptions = []): SubscriptionCostData
     {
@@ -140,5 +143,15 @@ trait HasSubscription
             $activable,
             false
         );
+    }
+
+    /**
+     * Add more days/one-month to the expiration time of a subscription
+     * 
+     * @param DateTime|string|Illuminate\Support\Carbon $period
+     */
+    public function extendSubscriptionPeriod($period = null): Subscription
+    {
+        return PaymentSub::subscription()->extendExpirationPeriod($this, $period);
     }
 }

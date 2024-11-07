@@ -21,9 +21,9 @@ class SaveDiscountData extends BaseData
                 ->castTo(
                     fn($discount) => is_string($discount) && $discount ? Discount::getOrFail($discount) : $discount
                 ),
-            'percentage' => $this->property()->number(),
-            'description' => $this->property()->string(),
-            'slug' => $this->property()->string(),
+            'percentage' => $this->property()->number($this->discount?->percentage),
+            'description' => $this->property()->string($this->discount?->description),
+            'slug' => $this->property()->string($this->discount?->slug),
         ];
     }
 }

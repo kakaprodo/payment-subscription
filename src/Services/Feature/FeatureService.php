@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\PaymentSubscription\Services\Feature;
 
+use Illuminate\Support\Collection;
 use Kakaprodo\PaymentSubscription\Models\Feature;
 use Kakaprodo\PaymentSubscription\Services\Base\ServiceBase;
 use Kakaprodo\PaymentSubscription\Services\Feature\Action\CreateFeatureAction;
@@ -10,7 +11,6 @@ use Kakaprodo\PaymentSubscription\Services\Feature\Action\CreateManyFeatureActio
 
 class FeatureService extends ServiceBase
 {
-
     public function create(array $options): Feature
     {
         return CreateFeatureAction::process($this->inputs($options));

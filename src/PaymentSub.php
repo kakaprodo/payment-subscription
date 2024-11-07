@@ -6,6 +6,7 @@ use Kakaprodo\PaymentSubscription\Services\Plan\PlanService;
 use Kakaprodo\PaymentSubscription\Services\Feature\FeatureService;
 use Kakaprodo\PaymentSubscription\Services\Discount\DiscountService;
 use Kakaprodo\PaymentSubscription\Services\Consumption\ConsumptionService;
+use Kakaprodo\PaymentSubscription\Services\Control\ControlService;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\SubscripionService;
 
 /**
@@ -14,6 +15,8 @@ use Kakaprodo\PaymentSubscription\Services\Subscripion\SubscripionService;
  * @property FeatureService $feature
  * @property SubscripionService $subscription
  * @property DiscountService $discount
+ * @property ConsumptionService $consumption
+ * @property ControlService $control
  */
 class PaymentSub
 {
@@ -23,6 +26,7 @@ class PaymentSub
         'subscription' => SubscripionService::class,
         'discount' => DiscountService::class,
         'consumption' => ConsumptionService::class,
+        'control' => ControlService::class,
     ];
 
     /**
@@ -51,7 +55,7 @@ class PaymentSub
     }
 
     /**
-     * A gate to plan discount service
+     * A gate to subscription discount service
      */
     public static function discount(): DiscountService
     {
@@ -59,11 +63,19 @@ class PaymentSub
     }
 
     /**
-     * A gate to plan discount service
+     * A gate to plan consumption service
      */
     public static function consumption(): ConsumptionService
     {
         return (new self())->consumption;
+    }
+
+    /**
+     * A gate to subscription control service
+     */
+    public static function control(): ControlService
+    {
+        return (new self())->control;
     }
 
     /**

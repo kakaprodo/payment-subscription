@@ -110,4 +110,18 @@ class SubscripionService extends ServiceBase
             'activating' => $activating
         ]));
     }
+
+    /**
+     * Add more days/one-month to the expiration time of a subscription
+     * 
+     * @param Model $subscriber
+     * @param DateTime|string|Illuminate\Support\Carbon $period
+     */
+    public function extendExpirationPeriod(Model $subscriber, $period = null): Subscription
+    {
+        $subscription = $subscriber->subscription;
+        $subscription->expired_at = $period ?? now()->addMonth();
+        $subscription->save();
+        return  $subscription;
+    }
 }

@@ -1,5 +1,7 @@
 <?php
 
+use Kakaprodo\PaymentSubscription\Models\Subscription;
+
 return [
 
     /*
@@ -7,17 +9,18 @@ return [
     | Table Names
     |--------------------------------------------------------------------------
     |
-    | Define the names of tables used by the payment-subscription package. 
-    | Customize these to align with your existing database structure.
+    | Define the database table names for each model used by the 
+    | payment-subscription package. Modify these if needed to match your 
+    | database schema.
     |
-    | - 'plan': Stores subscription plans available to users.
-    | - 'feature': Stores features associated with various plans.
-    | - 'consumptions': Tracks feature consumption by subscribers.
-    | - 'subscriptions': Connects entities (e.g., users) to their subscribed plans.
-    | - 'feature_plan': Pivot table to manage many-to-many relationships between
-    |    plans and features.
-    | - 'discount': Stores discount types for subscriptions.
-    | - `feature_subscription`: Stores activated feature on specific subscription
+    | - 'plan': Stores the subscription plans available to users.
+    | - 'feature': Stores the features that can be included in each plan.
+    | - 'consumptions': Tracks individual feature consumption for subscribers.
+    | - 'subscriptions': Links users (or other entities) to their subscriptions.
+    | - 'feature_plan': Pivot table for managing the many-to-many relationship
+    |    between plans and features.
+    | - 'discount': Stores information on any discounts applied to subscriptions.
+    | - `feature_subscription`: Tracks activated features for each subscription.
     |
     */
 
@@ -36,9 +39,8 @@ return [
     | Migration Settings
     |--------------------------------------------------------------------------
     |
-    | Specify whether the package should run its migrations automatically. 
-    | Set 'should_run' to true if you want the package to manage the migration 
-    | process for its tables.
+    | Set whether the package should handle its own migrations. If 'should_run'
+    | is true, the package will automatically create and update its tables.
     |
     */
 
@@ -51,75 +53,100 @@ return [
     | Subscription Statuses
     |--------------------------------------------------------------------------
     |
-    | Register all supported subscription statuses within your system. These
-    | statuses can be used to track the state of each subscription.
+    | Define the valid subscription statuses. These statuses can be used 
+    | to track and manage subscription states within the system.
+    | Required statuses include:
+    | - 'active'
+    | - 'expired'
+    | - 'canceled'
     |
     */
 
-    'status' => [
-        'active',
-        'expired',
-        'canceled'
-    ],
-    /**
-     * supported actions for subscription consumptions
-     */
+    'status' => Subscription::$supportedStatus,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Subscription Consumption Actions
+    |--------------------------------------------------------------------------
+    |
+    | Define any custom consumption actions relevant to your application.
+    | These actions categorize different types of usage, such as API calls
+    | or feature activations.
+    |
+    */
     'consumption_actions' => [],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Subscription Control(Or Verification)
+    |--------------------------------------------------------------------------
+    |
+    | Configure how the system manages subscription access checks. Set
+    | caching options to improve performance, especially for high-traffic
+    | applications. 
+    | - 'cache': Enables caching of permission results.
+    | - 'cache_period_in_second': Specifies cache duration (in seconds).
+    |
+    */
+    'control' => [
+        'cache' => true,
+        'cache_period_in_second' => 60,
+    ],
 
     /*
     |--------------------------------------------------------------------------
     | Seedable Data
     |--------------------------------------------------------------------------
     |
-    | Configure default data to seed for plans, features, and discounts. You 
-    | can define various plans, associated features, and available discounts 
-    | that the package will use when seeding the database.
+    | Define default data to seed into the database, including plans, 
+    | features, and discounts. Use these values as starting data or 
+    | examples in your system.
     |
-    | - 'plans': Define default subscription plans.
-    | - 'features': Specify features associated with each plan.
-    | - 'discounts': Add any discounts that apply to the plans.
-    | - 'connect_features_to_plan': Connect features to specific plans by 
-    |    mapping plan slugs to feature slugs.
+    | - 'plans': Array of default subscription plans (e.g., free, premium).
+    | - 'features': List of available features for subscription plans.
+    | - 'discounts': Discounts that can be applied to subscriptions.
+    | - 'connect_features_to_plan': Maps specific features to plans by their 
+    |    slugs, defining which features are part of which plans.
     |
     */
 
     'seeds' => [
         'plans' => [
-            // Example: Define a free or base subscription plan here.
+            // Example: Define a base or free plan with initial details.
             // [
             //     'name' => 'Free Plan',
             //     'sub_title' => null,
             //     'price_format' => null,
             //     'slug' => 'free-plan',
             //     'initial_cost' => 0,
-            //     'description' => 'For single personal or a very small business',
+            //     'description' => 'Ideal for individuals or small teams.',
             //     'is_free' => true,
             // ]
         ],
         'features' => [
-            // Example: Define individual features, such as organization limits.
+            // Example: Define a feature with usage limits or other restrictions.
             // [
-            //     'name' => 'Number Organizations: 1',
-            //     'slug' => 'number-organization',
+            //     'name' => 'Limited Organizations: 1',
+            //     'slug' => 'organization-limit',
             //     'slug_value' => 1,
             //     'activable' => false,
-            //     'cost' => 0
-            //     'description' => 'Will have right to the default organization only.',
+            //     'cost' => 0,
+            //     'description' => 'Grants access to a single default organization.',
             // ],
         ],
         'discounts' => [
-            // Example: Define discounts, like student or membership discounts.
+            // Example: Define a discount, such as for students or members.
             // [
             //     'percentage' => 10,
-            //     'description' => 'Student',
-            //     'slug' => 'student',
+            //     'description' => 'Student Discount',
+            //     'slug' => 'student-discount',
             // ]
         ],
         'connect_features_to_plan' => [
-            // Example: Map features to specific plans by their slugs.
-            // 'plan1_slug' => [
-            //     'feature_slug_1',
-            //     'feature_slug_2',
+            // Example: Map features to plans based on feature and plan slugs.
+            // 'plan-slug-1' => [
+            //     'feature-slug-1',
+            //     'feature-slug-2',
             // ],
         ]
     ],

@@ -7,6 +7,7 @@ use Kakaprodo\PaymentSubscription\Models\Feature;
 use Kakaprodo\PaymentSubscription\Models\Discount;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 use Kakaprodo\PaymentSubscription\Exceptions\PaymentSubModelNotFoundException;
+use Kakaprodo\PaymentSubscription\Helpers\Util;
 
 trait HasEntityShareable
 {
@@ -20,9 +21,7 @@ trait HasEntityShareable
         $model = is_string($modelSlug) ? self::whereSlug($modelSlug)->first() : $modelSlug;
 
         if (!$model && !$silent) {
-            throw new PaymentSubModelNotFoundException(
-                class_basename(self::class) . " record for '{$modelSlug}' is not found."
-            );
+            Util::throwModelNotFound(self::class, $modelSlug);
         }
 
         return $model;

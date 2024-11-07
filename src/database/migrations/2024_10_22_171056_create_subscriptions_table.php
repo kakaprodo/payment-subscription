@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('plan_id')->constrained((new PaymentPlan())->getTable());
             $table->integer('discount_id')->nullable()->constrained((new Discount())->getTable());
             $table->string('status')->default(config('payment-subscription.status')[0] ?? 'active');
+            $table->dateTime('expired_at')->nullable();
             $table->timestamps();
         });
     }
