@@ -1,5 +1,6 @@
 <?php
 
+use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 use Kakaprodo\PaymentSubscription\Models\Subscription;
 
 return [
@@ -21,6 +22,8 @@ return [
     |    between plans and features.
     | - 'discount': Stores information on any discounts applied to subscriptions.
     | - `feature_subscription`: Tracks activated features for each subscription.
+    | - `balance` : a table where to keep pre-payment
+    | - `balance_entries`: a table where to keep the movement of the fund into the system(money_in and money_out)
     |
     */
 
@@ -31,7 +34,9 @@ return [
         'subscriptions' => 'ps_subscriptions',
         'feature_plan' => 'ps_feature_plan',
         'discount' => 'ps_discounts',
-        'feature_subscription' => 'ps_feature_subscription'
+        'feature_subscription' => 'ps_feature_subscription',
+        'balance' => 'ps_balances',
+        'balance_entries' => 'ps_balance_entries',
     ],
 
     /*
@@ -66,6 +71,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Subscription Plan Types
+    |--------------------------------------------------------------------------
+    |
+    | Define the valid plan types. These types can be used 
+    | to check if plans are pay-as-you-go or fixed plan.
+    | Required types include:
+    | - 'pay-as-you-go'
+    | - 'fixed'
+    | - you can add custom type
+    |
+    */
+    'plan_types' => PaymentPlan::$supportedTypes,
+
+    /*
+    |--------------------------------------------------------------------------
     | Subscription Consumption Actions
     |--------------------------------------------------------------------------
     |
@@ -91,6 +111,20 @@ return [
     'control' => [
         'cache' => true,
         'cache_period_in_second' => 60,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Prepayment Balance Control
+    |--------------------------------------------------------------------------
+    |
+    | Configure how the manages the prepayment balances
+    */
+    'balance' => [
+        /**
+         * Days after what a balance should be expired
+         */
+        'expires_after' => 365
     ],
 
     /*

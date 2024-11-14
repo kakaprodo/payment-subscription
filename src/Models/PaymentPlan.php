@@ -20,9 +20,17 @@ class PaymentPlan extends Model
         'initial_cost',
         'description',
         'slug',
-        'is_free'
+        'is_free',
+        'type',
     ];
 
+    const TYPE_FIXED = 'fixed';
+    const TYPE_PAY_AS_YOU_GO = 'pay-as-you-go';
+
+    static $supportedTypes = [
+        self::TYPE_FIXED,
+        self::TYPE_PAY_AS_YOU_GO
+    ];
     /**
      * Get the table associated with the model.
      *
