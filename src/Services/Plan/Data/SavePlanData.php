@@ -11,12 +11,18 @@ use Kakaprodo\PaymentSubscription\Services\Base\Data\BaseData;
  * @property string $slug
  * @property float $initial_cost
  * @property string $description
- * @property bool $has_pay_as_you_go
+ * @property bool $is_free
+ * @property string $type
  */
 class SavePlanData extends BaseData
 {
     protected function expectedProperties(): array
     {
+        $supportedTypes = array_merge(
+            PaymentPlan::$supportedTypes,
+            config('payment-subscription.plan_types')
+        );
+
         return [
             'plan?' => $this->property(PaymentPlan::class)
                 ->orUseType('string')
@@ -30,6 +36,9 @@ class SavePlanData extends BaseData
             'initial_cost' => $this->property()->number($this->plan?->initial_cost ?? 0),
             'description?' => $this->property()->string($this->plan?->description),
             'is_free' => $this->property()->bool($this->plan?->is_free ?? false),
+            'type?' => $this->property()
+                ->inArray($supportedTypes)
+                ->default($this->plan?->type ?? PaymentPlan::TYPE_PAY_AS_YOU_GO)
         ];
     }
 }

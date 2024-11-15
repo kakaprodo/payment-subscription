@@ -155,6 +155,7 @@ return [
             //     'initial_cost' => 0,
             //     'description' => 'Ideal for individuals or small teams.',
             //     'is_free' => true,
+            //     'type' => 'pay-as-you-go' | 'fixed'
             // ]
         ],
         'features' => [
