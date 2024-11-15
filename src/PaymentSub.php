@@ -3,10 +3,11 @@
 namespace Kakaprodo\PaymentSubscription;
 
 use Kakaprodo\PaymentSubscription\Services\Plan\PlanService;
+use Kakaprodo\PaymentSubscription\Services\Balance\BalanceService;
+use Kakaprodo\PaymentSubscription\Services\Control\ControlService;
 use Kakaprodo\PaymentSubscription\Services\Feature\FeatureService;
 use Kakaprodo\PaymentSubscription\Services\Discount\DiscountService;
 use Kakaprodo\PaymentSubscription\Services\Consumption\ConsumptionService;
-use Kakaprodo\PaymentSubscription\Services\Control\ControlService;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\SubscripionService;
 
 /**
@@ -17,6 +18,7 @@ use Kakaprodo\PaymentSubscription\Services\Subscripion\SubscripionService;
  * @property DiscountService $discount
  * @property ConsumptionService $consumption
  * @property ControlService $control
+ * @property BalanceService $balance
  */
 class PaymentSub
 {
@@ -27,6 +29,7 @@ class PaymentSub
         'discount' => DiscountService::class,
         'consumption' => ConsumptionService::class,
         'control' => ControlService::class,
+        'balance' => BalanceService::class,
     ];
 
     /**
@@ -76,6 +79,14 @@ class PaymentSub
     public static function control(): ControlService
     {
         return (new self())->control;
+    }
+
+    /**
+     * A gate to balance service
+     */
+    public static function balance(): BalanceService
+    {
+        return (new self())->balance;
     }
 
     /**
