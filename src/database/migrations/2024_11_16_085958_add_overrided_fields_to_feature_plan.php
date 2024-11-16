@@ -28,6 +28,7 @@ return new class extends Migration
                 ->comment('this will overwrite the cost value in feature');
 
             $table->string('description')->nullable();
+            $table->string('name')->nullable();
         });
     }
 
@@ -43,6 +44,7 @@ return new class extends Migration
             $table->dropColumn('activable');
             $table->dropColumn('cost');
             $table->dropColumn('description');
+            $table->dropColumn('name');
         });
     }
 };
