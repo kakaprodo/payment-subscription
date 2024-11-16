@@ -52,7 +52,8 @@ class PaymentPlan extends Model
             'slug_value',
             'activable',
             'cost',
-            'description'
+            'description',
+            'name'
         ])->withTimestamps();
     }
 

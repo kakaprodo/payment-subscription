@@ -47,6 +47,7 @@ class AddFeaturesToPlanData extends BaseData
 
                     $featurePlanData = !is_array($featurePlan) ? [] :  VirtualCustomData::check(
                         fn(CustomData $data) => [
+                            'name?' => $data->property()->string(null),
                             'slug_value?' => $data->property()->string(null),
                             'activable?' => $data->property()->bool(null),
                             'cost?' => $data->property()->string(null),

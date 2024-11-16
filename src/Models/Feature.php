@@ -43,7 +43,8 @@ class Feature extends Model
             'slug_value',
             'activable',
             'cost',
-            'description'
+            'description',
+            'name'
         ])->withTimestamps();
     }
 }
