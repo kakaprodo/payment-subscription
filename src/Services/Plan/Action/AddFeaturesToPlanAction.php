@@ -10,14 +10,7 @@ class AddFeaturesToPlanAction extends CustomActionBuilder
 {
     public function handle(AddFeaturesToPlanData $data)
     {
-        $date = now();
-        $formattedFeaturePlan = $data->getNewFeatureIds()
-            ->map(fn($featureId) => [
-                'feature_id' => $featureId,
-                'plan_id' => $data->plan->id,
-                'created_at' => $date,
-                'updated_at' => $date
-            ]);
+        $formattedFeaturePlan = $data->formatFeaturesToAdd();
 
         if ($formattedFeaturePlan->isEmpty()) return;
 

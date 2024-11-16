@@ -48,7 +48,11 @@ class PaymentPlan extends Model
             (new FeaturePlan)->getTable(),
             'plan_id',
             'feature_id'
-        );
+        )->withPivot([
+            'slug_value',
+            'activable',
+            'cost',
+        ])->withTimestamps();
     }
 
     public function subscriptions(): HasMany

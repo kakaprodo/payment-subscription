@@ -39,6 +39,10 @@ class Feature extends Model
             (new FeaturePlan)->getTable(),
             'feature_id',
             'plan_id',
-        );
+        )->withPivot([
+            'slug_value',
+            'activable',
+            'cost',
+        ])->withTimestamps();
     }
 }

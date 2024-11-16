@@ -42,6 +42,11 @@ class ToggleFeatureActivationData extends BaseData
     public function boot()
     {
         if (!$this->feature->activable) {
+            // check from the overwritted feature's pivot
+            $featurePlan = $this->feature->plans()->find($this->subscription->plan_id)?->pivot;
+
+            if ($featurePlan?->activable) return;
+
             throw new ActivationOfNonActivableFeatureException(
                 "Make the feature {$this->feature->name} activable first"
             );

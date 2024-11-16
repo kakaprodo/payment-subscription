@@ -182,6 +182,9 @@ return [
             // 'plan-slug-1' => [
             //     'feature-slug-1',
             //     'feature-slug-2',
+            //     'feature-with-overwritten-value' => [
+            //         'activable' => true, // this will overwrite the activable value of the feature
+            //     ]
             // ],
         ]
     ],
