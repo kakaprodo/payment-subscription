@@ -12,6 +12,7 @@ class FeaturePlan extends Model
         'slug_value',
         'activable',
         'cost',
+        'description'
     ];
 
     /**

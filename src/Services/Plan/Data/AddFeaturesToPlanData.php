@@ -50,6 +50,7 @@ class AddFeaturesToPlanData extends BaseData
                             'slug_value?' => $data->property()->string(null),
                             'activable?' => $data->property()->bool(null),
                             'cost?' => $data->property()->string(null),
+                            'description?' => $data->property()->string(null),
                         ],
                         $featurePlan
                     );

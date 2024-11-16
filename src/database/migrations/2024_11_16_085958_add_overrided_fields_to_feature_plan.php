@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('cost')
                 ->nullable()
                 ->comment('this will overwrite the cost value in feature');
+
+            $table->string('description')->nullable();
         });
     }
 
@@ -38,10 +40,9 @@ return new class extends Migration
     {
         Schema::table((new FeaturePlan())->getTable(), function (Blueprint $table) {
             $table->dropColumn('slug_value');
-
             $table->dropColumn('activable');
-
             $table->dropColumn('cost');
+            $table->dropColumn('description');
         });
     }
 };
