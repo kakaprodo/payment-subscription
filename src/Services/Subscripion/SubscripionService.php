@@ -93,21 +93,15 @@ class SubscripionService extends ServiceBase
      * Activate a given feature to a subscription
      * 
      * @param Model $subscriber
-     * @param string|Feature $feature
-     * @param ?Model $activable
-     * @param bool $activating
+     * @param array $options
      */
     public function toggleFeatureActivation(
         Model $subscriber,
-        $feature,
-        ?Model $activable = null,
-        $activating = true
+        array $options = [],
     ): bool {
         return ToggleFeatureActivationAction::process($this->inputs([
             'subscriber' => $subscriber,
-            'feature' =>  $feature,
-            'activable' => $activable,
-            'activating' => $activating
+            ...$options
         ]));
     }
 

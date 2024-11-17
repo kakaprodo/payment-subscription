@@ -11,7 +11,8 @@ class FeatureSubscripion extends Model
         'feature_id',
         'subscription_id',
         'activable_type',
-        'activable_id'
+        'activable_id',
+        'reference'
     ];
 
     /**

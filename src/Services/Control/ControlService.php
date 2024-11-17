@@ -40,22 +40,36 @@ class ControlService extends ServiceBase
     }
 
     /**
-     * Check if a given feature is activated on a subscription with possibility
-     * to check if it was a ctivated on a given model
+     * Check a given model's subscription has a given feature on or 
+     * whether the feature is activated
      * 
      * @param Model $subscriber
-     * @param string|Feature $feature
-     * @param Model $activable
+     * @param array $options
      */
-    public function hasFeatureActivated(
+    public function featureExistsOrActivated(
         Model $subscriber,
-        $feature,
-        ?Model $activable = null
+        array $options,
     ) {
         return ControlData::make([
             'subscriber' => $subscriber,
-            'feature' => $feature,
-            'activable' => $activable
+            ...$options
+        ])->featureExistsOrActivated();
+    }
+
+    /**
+     * Check if a given feature is activated on a subscription with possibility
+     * to check if it was activated on a given model(or reference)
+     * 
+     * @param Model $subscriber
+     * @param array $options
+     */
+    public function hasFeatureActivated(
+        Model $subscriber,
+        array $options,
+    ) {
+        return ControlData::make([
+            'subscriber' => $subscriber,
+            ...$options
         ])->hasFeatureActivated();
     }
 }

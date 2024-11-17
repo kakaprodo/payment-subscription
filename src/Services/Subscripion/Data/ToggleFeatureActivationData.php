@@ -17,6 +17,7 @@ use Kakaprodo\PaymentSubscription\Exceptions\ActivationOfNonActivableFeatureExce
  * @property Subscription $subscription
  * @property Feature $feature
  * @property bool $activating
+ * @property string $reference : any reference for deep searching
  */
 class ToggleFeatureActivationData extends BaseData
 {
@@ -35,7 +36,8 @@ class ToggleFeatureActivationData extends BaseData
             'activable?' => $this->property(Model::class)->customValidator(
                 fn($subscriber) => Util::forceClassTrait(HasActivablePlanFeature::class, $subscriber)
             ),
-            'activating?' => $this->property()->default(true)
+            'activating?' => $this->property()->default(true),
+            'reference?' => $this->property()->string()
         ];
     }
 

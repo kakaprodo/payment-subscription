@@ -15,6 +15,7 @@ use Kakaprodo\PaymentSubscription\Models\Traits\HasActivablePlanFeature;
 /**
  * @property HasSubscription $subscriber
  * @property HasActivablePlanFeature $activable
+ * @property string|int $feature_activation_reference
  * @property Feature $feature
  * @property PaymentPlan $plan
  * @property Subscription $subscription
@@ -52,6 +53,7 @@ class ControlData extends BaseData
             'activable?' => $this->property(Model::class)->customValidator(
                 fn($subscriber) => Util::forceClassTrait(HasActivablePlanFeature::class, $subscriber)
             ),
+            'reference?' => $this->property()->string()->transform('feature_activation_reference'),
             'feature?' => $this->property(Feature::class)
                 ->orUseType('string')
                 ->castTo(function ($feature) {
@@ -104,10 +106,21 @@ class ControlData extends BaseData
                     ->where('feature_id', $this->feature->id)
                     ->exists();
 
-                return $hasFeature ? true : $this->hasFeatureActivated();
+                return $hasFeature;
             },
             now()->addSeconds($this->cache_period)
         );
+    }
+
+    /**
+     * check subscription has a given feature or whether a feature
+     * has been activated on it
+     */
+    public function featureExistsOrActivated()
+    {
+        if ($this->hasFeature()) return true;
+
+        return $this->hasFeatureActivated();
     }
 
     /**
@@ -117,12 +130,15 @@ class ControlData extends BaseData
     {
         $this->throwWhenFieldAbsent(['feature', 'subscriber']);
 
-        $onEntity = $this->activable ? "{$this->activable->id}-" . get_class($this->activable) : "";
+        $onEntity = $this->activable ? "{$this->activable->id}-" . class_basename(get_class($this->activable)) : "";
+
+        $reference = $this->feature_activation_reference;
+        $cacheKey = "sp-{$this->subscription->id}-has-active-feature-{$this->feature->id}-on-{$onEntity}-{$reference}";
 
         return Util::cacheWhen(
             $this->should_cache,
-            "sp-{$this->subscription->id}-has-active-feature-{$this->feature->id}-on-{$onEntity}",
-            function () {
+            $cacheKey,
+            function () use ($reference) {
                 $query = $this->subscription->activated_features()
                     ->where((new Feature())->getTable() . '.id', $this->feature->id);
 
@@ -130,6 +146,11 @@ class ControlData extends BaseData
                     $query->wherePivot('activable_id', $this->activable->id)
                         ->wherePivot('activable_type', get_class($this->activable));
                 }
+
+                if ($reference) {
+                    $query->wherePivot('reference', $reference);
+                }
+
                 return $query->exists();
             },
             now()->addSeconds($this->cache_period)
