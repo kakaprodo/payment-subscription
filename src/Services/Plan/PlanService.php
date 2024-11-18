@@ -21,6 +21,14 @@ class PlanService extends ServiceBase
         return AllPlanData::make($this->inputs($filterOptions))->plans();;
     }
 
+    /**
+     * All supported payment plans each with its formatted overriten features
+     */
+    public function allWithOverridenList(array $filterOptions = []): Collection
+    {
+        return AllPlanData::make($this->inputs($filterOptions))->withOverridenList();
+    }
+
     public function create(array $options): PaymentPlan
     {
         return CreatePlanAction::process($this->inputs($options));

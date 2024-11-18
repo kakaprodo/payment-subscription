@@ -11,7 +11,7 @@ class CreateManyDiscountAction extends CustomActionBuilder
     public function handle(CreateManyDiscountData $data)
     {
         foreach ($data->discounts as $discount) {
-            Discount::firstOrCreate([
+            Discount::updateOrCreate([
                 'slug' => $discount->slug
             ], $discount->onlyValidated());
         }

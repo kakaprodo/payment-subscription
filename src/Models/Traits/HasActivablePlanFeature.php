@@ -21,7 +21,8 @@ trait HasActivablePlanFeature
             'feature_id'
         )->withPivot([
             'activable_type',
-            'activable_id'
+            'activable_id',
+            'reference'
         ])->wherePivot('activable_type', static::class);
     }
 }

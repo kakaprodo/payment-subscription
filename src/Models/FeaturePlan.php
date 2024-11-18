@@ -9,6 +9,11 @@ class FeaturePlan extends Model
     protected $fillable = [
         'feature_id',
         'plan_id',
+        'name',
+        'slug_value',
+        'activable',
+        'cost',
+        'description'
     ];
 
     /**

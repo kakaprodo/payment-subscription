@@ -35,14 +35,43 @@ trait HasSubscriptionControl
      * was activated on
      * 
      * @param string|Feature $feature
-     *  @param ?Model $activable
+     * @param ?Model $activable
+     * @param string|int $reference
      */
-    public function hasActivatedFeature($feature, ?Model $activable = null)
-    {
+    public function hasActivatedFeature(
+        $feature,
+        ?Model $activable = null,
+        $reference = null
+    ) {
         return PaymentSub::control()->hasFeatureActivated(
             $this,
-            $feature,
-            $activable
+            [
+                'feature' => $feature,
+                'activable' => $activable,
+                'reference' => $reference
+            ]
+        );
+    }
+
+    /**
+     * Check if a subscriber has a given feaure or has the feature
+     * activated
+     * @param string|Feature $feature
+     * @param ?Model $activable
+     * @param string|int $reference
+     */
+    public function featureExistsOrActivated(
+        $feature,
+        ?Model $activable = null,
+        $reference = null
+    ) {
+        return PaymentSub::control()->featureExistsOrActivated(
+            $this,
+            [
+                'feature' => $feature,
+                'activable' => $activable,
+                'reference' => $reference
+            ]
         );
     }
 }

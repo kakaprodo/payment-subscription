@@ -17,6 +17,7 @@ use Kakaprodo\PaymentSubscription\Exceptions\ActivationOfNonActivableFeatureExce
  * @property Subscription $subscription
  * @property Feature $feature
  * @property bool $activating
+ * @property string $reference : any reference for deep searching
  */
 class ToggleFeatureActivationData extends BaseData
 {
@@ -35,13 +36,19 @@ class ToggleFeatureActivationData extends BaseData
             'activable?' => $this->property(Model::class)->customValidator(
                 fn($subscriber) => Util::forceClassTrait(HasActivablePlanFeature::class, $subscriber)
             ),
-            'activating?' => $this->property()->default(true)
+            'activating?' => $this->property()->default(true),
+            'reference?' => $this->property()->string()
         ];
     }
 
     public function boot()
     {
         if (!$this->feature->activable) {
+            // check from the overwritted feature's pivot
+            $featurePlan = $this->feature->plans()->find($this->subscription->plan_id)?->pivot;
+
+            if ($featurePlan?->activable) return;
+
             throw new ActivationOfNonActivableFeatureException(
                 "Make the feature {$this->feature->name} activable first"
             );

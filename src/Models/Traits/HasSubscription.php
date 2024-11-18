@@ -118,14 +118,21 @@ trait HasSubscription
      * 
      * @param string|Discount $discount
      * @param ?Model $activable
+     * @param ?string|?int $reference
      */
-    public function activateSubscriptionFeature($feature, ?Model $activable = null)
-    {
+    public function activateSubscriptionFeature(
+        $feature,
+        ?Model $activable = null,
+        $reference = null
+    ) {
         return PaymentSub::subscription()->toggleFeatureActivation(
             $this,
-            $feature,
-            $activable,
-            true
+            [
+                'feature' => $feature,
+                'activable' => $activable,
+                'activating' => true,
+                'reference' =>  $reference
+            ]
         );
     }
 
@@ -139,9 +146,11 @@ trait HasSubscription
     {
         return PaymentSub::subscription()->toggleFeatureActivation(
             $this,
-            $feature,
-            $activable,
-            false
+            [
+                'feature' => $feature,
+                'activable' => $activable,
+                'activating' => false
+            ]
         );
     }
 

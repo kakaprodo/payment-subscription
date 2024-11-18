@@ -31,6 +31,7 @@ class SeedDataCommand extends Command
         if (($connectFeatToPlans = config('payment-subscription.seeds.connect_features_to_plan')) != []) {
             foreach ($connectFeatToPlans as $planSlug => $features) {
                 if (empty($features)) continue;
+
                 PaymentSub::plan()->addFeatures($planSlug, $features);
             }
             $this->info('Connected features to plan');

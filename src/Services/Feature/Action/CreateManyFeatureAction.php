@@ -11,7 +11,7 @@ class CreateManyFeatureAction extends CustomActionBuilder
     public function handle(CreateManyFeatureData $data)
     {
         foreach ($data->features as $feature) {
-            Feature::firstOrCreate([
+            Feature::updateOrCreate([
                 'slug' => $feature->slug
             ], $feature->onlyValidated());
         }
