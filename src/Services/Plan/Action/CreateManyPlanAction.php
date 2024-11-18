@@ -11,7 +11,7 @@ class CreateManyPlanAction extends CustomActionBuilder
     public function handle(CreateManyPlanData $data)
     {
         foreach ($data->plans as $plan) {
-            PaymentPlan::firstOrCreate([
+            PaymentPlan::updateOrCreate([
                 'slug' => $plan->slug
             ], $plan->onlyValidated());
         }

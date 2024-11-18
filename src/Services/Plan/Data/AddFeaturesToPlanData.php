@@ -89,6 +89,11 @@ class AddFeaturesToPlanData extends BaseData
                 'plan_id' => $this->plan->id,
                 'created_at' => $date,
                 'updated_at' => $date,
+                'name'  =>  null,
+                'slug_value' =>  null,
+                'activable' =>  null,
+                'cost' =>  null,
+                'description' =>  null,
                 ...($this->features[$feature->slug])
             ];
         });

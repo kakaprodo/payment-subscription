@@ -8,4 +8,8 @@
 -   check a feature is activated: provide reference
 
 3. New methods
+
     - Subscription control: featureExistsOrActivated : to check a feature exists or activated
+
+4. Plan list: get list with formatted overiden features: use the method: allWithOverridenList
+5. Bulk creation: when creating many plans, features and discounts at the same time, the package create only if record does not exist otherwise it updates
