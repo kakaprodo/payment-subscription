@@ -18,7 +18,7 @@ class BalanceService extends ServiceBase
     {
         return BalanceData::make($this->inputs([
             'balanceable' => $balanceable
-        ]))->balance()->amount;
+        ]))->getAmount();
     }
 
     /**

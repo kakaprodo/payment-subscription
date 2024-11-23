@@ -34,10 +34,7 @@ class AllPlanData extends BaseData
         $plans = [];
         foreach ($this->plans() as $plan) {
             $newPlan = $plan;
-            $newPlan->features = $plan->features->map(fn($feature) => OveridenFeaturePlanData::make([
-                'feature' => $feature,
-                'feature_plan' => $feature->pivot,
-            ]));
+            $newPlan->features = $plan->overridenFeatures();
 
             $plans[] = $newPlan;
         }

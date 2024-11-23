@@ -10,7 +10,7 @@ class CreateBalanceMovementAction extends CustomActionBuilder
 {
     public function handle(CreateBalanceMovementData $data): BalanceEntry
     {
-        $balanceEntry = $data->balance_data->balance->entries()->create(
+        $balanceEntry = $data->balance_data->balance()->entries()->create(
             $data->wrapper('for_db')
         );
 

@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\PaymentSubscription\Services\Balance\Data;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\Helpers\Util;
 use Kakaprodo\PaymentSubscription\Models\Balance;
@@ -9,7 +10,7 @@ use Kakaprodo\PaymentSubscription\Services\Base\Data\BaseData;
 use Kakaprodo\PaymentSubscription\Models\Traits\HasSubscriptionPrepayment;
 
 /**
- * @property HasSubscriptionPrepayment $balanceable
+ * @property HasSubscriptionPrepayment|Model $balanceable
  * @property DateTime|string|Illuminate\Support\Carbon expired_at
  * 
  * @property Balance $balance
@@ -20,7 +21,7 @@ class BalanceData extends BaseData
     {
 
         return [
-            'balanceable?' => $this->property(Model::class)->customValidator(
+            'balanceable' => $this->property(Model::class)->customValidator(
                 fn($balanceable) => Util::forceClassTrait(HasSubscriptionPrepayment::class, $balanceable)
             ),
 
@@ -37,7 +38,7 @@ class BalanceData extends BaseData
 
     public function boot()
     {
-        $this->balance();
+        //$this->balance(); we no longer want this because it make extra query after caching data
     }
 
     public function balance(): Balance
@@ -50,9 +51,31 @@ class BalanceData extends BaseData
         ]);
     }
 
+    /**
+     * get balance amount
+     */
+    public function getAmount()
+    {
+        $cachePeriod = config('payment-subscription.balance.cache_amount_for');
+
+        return Util::cacheWhen(
+            $cachePeriod !== null,
+            $this->getCacheBalanceAmountKey($this->balanceable),
+            fn() => $this->balance()->amount,
+            now()->addMinutes($cachePeriod ?? 1)
+        );
+    }
+
     public function hasMoney($amount): bool
     {
-        return $this->realBalanceAmount() >= $amount;
+        $cachePeriod = config('payment-subscription.balance.cache_verification_for');
+
+        return Util::cacheWhen(
+            $cachePeriod !== null,
+            $this->getCacheBalanceVerificationKey($this->balanceable),
+            fn() => $this->realBalanceAmount() >= $amount,
+            now()->addSeconds($cachePeriod ?? 1)
+        );
     }
 
     /**
@@ -73,7 +96,7 @@ class BalanceData extends BaseData
     {
         $movemnt = $isIn ? 'in' : 'out';
 
-        return $this->balance->entries()->$movemnt()->sum('amount');
+        return $this->balance()->entries()->$movemnt()->sum('amount');
     }
 
     /**
@@ -83,10 +106,21 @@ class BalanceData extends BaseData
     public function persistNetAmount($extendExpiration = false)
     {
         $realAmount = $this->realBalanceAmount();
-        $this->balance->amount =  $realAmount >= 0 ?  $realAmount : 0;
+        $this->balance()->amount =  $realAmount >= 0 ?  $realAmount : 0;
         if ($extendExpiration) {
-            $this->balance->expired_at = now()->addDays($this->expiration_days);
+            $this->balance()->expired_at = now()->addDays($this->expiration_days);
         }
-        $this->balance->save();
+        $this->balance()->save();
+
+        $this->resetCache();
+    }
+
+    /**
+     * delete the cached balance amount and verification cache
+     */
+    private function resetCache()
+    {
+        Cache::forget($this->getCacheBalanceVerificationKey($this->balanceable));
+        Cache::forget($this->getCacheBalanceAmountKey($this->balanceable));
     }
 }
