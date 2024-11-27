@@ -17,16 +17,21 @@ class Subscription extends Model
         'discount_id',
         'status',
         'expired_at',
+        'trial_end_on'
     ];
 
     const STATUS_ACTIVE = 'active';
     const STATUS_EXPIRED = 'expired';
     const STATUS_CANCELED = 'canceled';
+    const STATUS_TRIAL_ACTIVE = 'trial_active';
+    const STATUS_SUSPENDED = 'suspended';
 
     static $supportedStatus = [
         self::STATUS_ACTIVE,
         self::STATUS_EXPIRED,
-        self::STATUS_CANCELED
+        self::STATUS_CANCELED,
+        self::STATUS_TRIAL_ACTIVE,
+        self::STATUS_SUSPENDED,
     ];
     /**
      * Get the table associated with the model.

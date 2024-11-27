@@ -106,11 +106,13 @@ return [
     | applications. 
     | - 'cache': Enables caching of permission results.
     | - 'cache_period_in_second': Specifies cache duration (in seconds).
+    | - `trial_period`: number of days after what a trial period should end
     |
     */
     'control' => [
         'cache' => true,
         'cache_period_in_second' => 60,
+        'trial_period' => 30,
     ],
 
     /*

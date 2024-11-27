@@ -1,3 +1,5 @@
+0. Before anything you need to run the migration
+
 1. Added the support of overwitting the feature(in featurePlan pivot) when connecting a feature to a plan:
 
 -   this has caused an improvement in the config file
@@ -7,7 +9,7 @@
 -   activate a feature to a subscription with activable: provide reference
 -   check a feature is activated: provide reference
 
-3. New methods
+3. Subscription feature existance
 
     - Subscription control: featureExistsOrActivated : to check a feature exists or activated
 
@@ -17,5 +19,22 @@
 5. Bulk creation: when creating many plans, features and discounts at the same time, the package create only if record does not exist otherwise it updates
 
 6. Add ability to cache balance
+
     - money verification for specified seconds
     - amount for sepcified minutes
+
+7. Support Trial period
+
+-   define trial period in config
+-   add possibility to subscribe with trial period
+    -   $user->subscribe('special-plan', [
+        'is_trial' => true,
+        ]);
+-   added new method:
+    -   dump($user->isInTrialPeriod());
+    -   dump($user->trialPeriodHasExpired());
+    -   dump($user->getTrialRemainingDays());
+    -   dump($user->subscriptionIsActive());
+    -   dump($user->subscriptionIsSuspended());
+    -   dump($user->subscriptionIsExpired());
+    -   dump($user->subscriptionIsCanceled());

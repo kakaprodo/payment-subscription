@@ -57,8 +57,9 @@ class ControlService extends ServiceBase
     }
 
     /**
-     * Check if a given feature is activated on a subscription with possibility
-     * to check if it was activated on a given model(or reference)
+     * Check if a given feature is activated on a subscription with 
+     * possibility to check if it was activated on a given model
+     * (or reference)
      * 
      * @param Model $subscriber
      * @param array $options
@@ -71,5 +72,19 @@ class ControlService extends ServiceBase
             'subscriber' => $subscriber,
             ...$options
         ])->hasFeatureActivated();
+    }
+
+    /**
+     * This allows you to access to all helper method to control the
+     * subscription status
+     */
+    public function data(
+        Model $subscriber,
+        array $options = [],
+    ): ControlData {
+        return ControlData::make([
+            'subscriber' => $subscriber,
+            ...$options
+        ]);
     }
 }
