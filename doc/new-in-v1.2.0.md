@@ -30,7 +30,9 @@
     -   $subscriber->subscribe('special-plan', [
         'is_trial' => true,
         ]);
--   added new method:
+
+9.  added new method:
+
     -   $subscriber->isInTrialPeriod();
     -   $subscriber->trialPeriodHasExpired();
     -   $subscriber->getTrialRemainingDays();
@@ -41,3 +43,8 @@
     -   $subscriber->myPlan();
     -   $subscriber->getOverridenPlanFeature($featureSlug|$featureModel)
     -   $balanceable->balanceHasMoneyWithSubscriptionUsageIncluded()
+
+10. Feature activation
+
+-   support the ability to provide an action `description`
+-   the method activateSubscriptionFeature accept now a fourth argument, an array options where description can be passed

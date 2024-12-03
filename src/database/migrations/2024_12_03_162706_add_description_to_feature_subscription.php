@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Kakaprodo\PaymentSubscription\Models\Subscription;
+use Kakaprodo\PaymentSubscription\Models\FeatureSubscripion;
 
 return new class extends Migration
 {
@@ -14,8 +14,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table((new Subscription())->getTable(), function (Blueprint $table) {
-            $table->date('trial_end_on')->nullable();
+        Schema::table((new FeatureSubscripion())->getTable(), function (Blueprint $table) {
+            $table->string('description')->nullable();
         });
     }
 
@@ -26,8 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table((new Subscription())->getTable(), function (Blueprint $table) {
-            $table->dropColumn('trial_end_on');
+        Schema::table((new FeatureSubscripion())->getTable(), function (Blueprint $table) {
+            $table->dropColumn('description');
         });
     }
 };

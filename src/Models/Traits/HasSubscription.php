@@ -123,7 +123,8 @@ trait HasSubscription
     public function activateSubscriptionFeature(
         $feature,
         ?Model $activable = null,
-        $reference = null
+        $reference = null,
+        array $options = []
     ) {
         return PaymentSub::subscription()->toggleFeatureActivation(
             $this,
@@ -131,7 +132,8 @@ trait HasSubscription
                 'feature' => $feature,
                 'activable' => $activable,
                 'activating' => true,
-                'reference' =>  $reference
+                'reference' =>  $reference,
+                ...$options
             ]
         );
     }
