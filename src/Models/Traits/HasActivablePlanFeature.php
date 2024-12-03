@@ -23,7 +23,8 @@ trait HasActivablePlanFeature
             'activable_type',
             'activable_id',
             'reference',
-            'subscription_id'
+            'subscription_id',
+            'description'
         ])->wherePivot('activable_type', static::class);
     }
 }

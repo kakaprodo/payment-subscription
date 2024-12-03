@@ -5,11 +5,13 @@ namespace Kakaprodo\PaymentSubscription\Services\Subscripion\Data;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\Helpers\Util;
+use Kakaprodo\PaymentSubscription\Models\Feature;
 use Kakaprodo\PaymentSubscription\Models\Discount;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
 use Kakaprodo\PaymentSubscription\Models\Subscription;
 use Kakaprodo\PaymentSubscription\Services\Base\Data\BaseData;
 use Kakaprodo\PaymentSubscription\Models\Traits\HasSubscription;
+use Kakaprodo\PaymentSubscription\Services\Plan\Data\Partial\OveridenFeaturePlanData;
 
 /**
  * @property HasSubscription $subscriber
@@ -69,12 +71,34 @@ class SubscriptionCostData extends BaseData
     {
         $activatedFeatures =  $this->subscription->activated_features;
 
-        $this->activatedFeatureItems = $activatedFeatures->groupBy('name')
+        $activatedFeatureIds = $activatedFeatures->pluck('id')->all();
+
+        // we refetch this to get the real value of feature based on a plan
+        $this->plan->load([
+            'features' => fn($q) => $q->whereIn((new Feature())->getTable() . ".id", $activatedFeatureIds)
+        ]);
+        $overridenPlanFeatures = $this->plan->overridenFeatures();
+
+        $this->activatedFeatureItems = $activatedFeatures->map(
+            function (Feature $feature) use ($overridenPlanFeatures) {
+
+                $featureOverridenData = $overridenPlanFeatures->filter(
+                    fn(OveridenFeaturePlanData $data) => $data->feature->id ===  $feature->id
+                )->first();
+
+                $featureOverridenData->activation_description = $feature->pivot->description ?? $feature->name;
+                return $featureOverridenData->all();
+            }
+        )->groupBy('activation_description')
             ->map(fn(Collection $features) => $features->sum('cost'))
             ->filter(fn($featureCost) => $featureCost > 0)
             ->all();
 
-        $this->totalActivatedFeature =  $activatedFeatures->sum('cost');
+        $this->totalActivatedFeature =  $overridenPlanFeatures->sum(
+            function (OveridenFeaturePlanData $data) {
+                return is_numeric($data->cost) ? $data->cost : 0;
+            }
+        );
     }
 
     /**
@@ -98,13 +122,13 @@ class SubscriptionCostData extends BaseData
     {
         $initialCost = $this->plan->is_free ? 0 : $this->plan->initial_cost;
 
-        $cost = ($this->shortConsumptionList['total'] ?? 0)
+        $this->cost = ($this->shortConsumptionList['total'] ?? 0)
             +  $initialCost
             +  $this->totalActivatedFeature;
 
-        $this->discountAmount =  round($this->discount ? (($cost * $this->discount->percentage) / 100) : 0, 2);
+        $this->discountAmount =  round($this->discount ? (($this->cost * $this->discount->percentage) / 100) : 0, 2);
 
-        return $cost - $this->discountAmount;
+        return $this->cost - $this->discountAmount;
     }
 
     /**
@@ -116,6 +140,7 @@ class SubscriptionCostData extends BaseData
         return [
             'consumptions' => $this->shortConsumptionList['list'] ?? [],
             'activated_functionalities' => $this->activatedFeatureItems,
+            'cost' => $this->cost,
             'discounts' => ($this->discount ? ["{$this->discount->description} {$this->discount->percentage}%" => $this->discountAmount] : []),
             'net_cost' =>  $netCost
         ];

@@ -73,7 +73,8 @@ class Subscription extends Model
         )->withPivot([
             'activable_type',
             'activable_id',
-            'reference'
+            'reference',
+            'description'
         ])->withTimestamps();
     }
 }

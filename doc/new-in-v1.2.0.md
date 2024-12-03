@@ -48,3 +48,7 @@
 
 -   support the ability to provide an action `description`
 -   the method activateSubscriptionFeature accept now a fourth argument, an array options where description can be passed
+
+11. consumption
+
+-   added `cost` brut on costwithdetails
