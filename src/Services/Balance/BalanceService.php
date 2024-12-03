@@ -5,7 +5,9 @@ namespace Kakaprodo\PaymentSubscription\Services\Balance;
 use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\Models\BalanceEntry;
 use Kakaprodo\PaymentSubscription\Services\Base\ServiceBase;
+use Kakaprodo\PaymentSubscription\Models\Traits\HasSubscription;
 use Kakaprodo\PaymentSubscription\Services\Balance\Data\BalanceData;
+use Kakaprodo\PaymentSubscription\Models\Traits\HasSubscriptionPrepayment;
 use Kakaprodo\PaymentSubscription\Services\Balance\Action\DeleteBalanceEntryAction;
 use Kakaprodo\PaymentSubscription\Services\Balance\Action\CreateBalanceMovementAction;
 
@@ -18,11 +20,11 @@ class BalanceService extends ServiceBase
     {
         return BalanceData::make($this->inputs([
             'balanceable' => $balanceable
-        ]))->balance()->amount;
+        ]))->getAmount();
     }
 
     /**
-     * check if a given balanceable has a given amount in their 
+     * check if a given balanceable model has a given amount in their 
      * balance
      */
     public function hasMoney(Model $balanceable, $amount): bool
@@ -30,6 +32,27 @@ class BalanceService extends ServiceBase
         return BalanceData::make($this->inputs([
             'balanceable' => $balanceable
         ]))->hasMoney($amount);
+    }
+
+    /**
+     * Check if the balanceable has the specified amount including current billing 
+     * cycle usage.
+     * 
+     * @var HasSubscriptionPrepayment|Model $balanceable
+     * @var float $amount
+     * @var HasSubscription|Model $subscriber
+     */
+    public function hasMoneyWithSubscriptionUsageIncluded(
+        Model $balanceable,
+        $amount,
+        Model $subscriber
+    ) {
+        $usageCost = $subscriber->subscriptionCost()->netCost();
+        $totalMoneyToCheck =   $usageCost + $amount;
+
+        $moneyInBalance = $balanceable->getBalanceAmount();
+
+        return $moneyInBalance >= $totalMoneyToCheck;
     }
 
     /**

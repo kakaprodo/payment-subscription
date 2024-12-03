@@ -106,11 +106,13 @@ return [
     | applications. 
     | - 'cache': Enables caching of permission results.
     | - 'cache_period_in_second': Specifies cache duration (in seconds).
+    | - `trial_period`: number of days after what a trial period should end
     |
     */
     'control' => [
         'cache' => true,
         'cache_period_in_second' => 60,
+        'trial_period' => 30,
     ],
 
     /*
@@ -119,12 +121,16 @@ return [
     |--------------------------------------------------------------------------
     |
     | Configure how the manages the prepayment balances
+    | `expires_after`: Days after what a balance should be expired
+    | `cache_verification_for`: Seconds after what the balance hasMoney  
+    |                           verification should be refetched from Db
+    | `cache_amount_for`: Minutes after what the balance amount  should be 
+    |                      refetched from Db
     */
     'balance' => [
-        /**
-         * Days after what a balance should be expired
-         */
-        'expires_after' => 365
+        'expires_after' => 365,
+        'cache_verification_for' => 10, //or null
+        'cache_amount_for' => 1, // or null
     ],
 
     /*

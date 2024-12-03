@@ -9,7 +9,7 @@ class DeleteBalanceEntryAction extends CustomActionBuilder
 {
     public function handle(DeleteBalanceEntryData $data)
     {
-        $data->balance_data->balance->entries()
+        $data->balance_data->balance()->entries()
             ->tap(function ($q) use ($data) {
                 if (!count($data->balance_entry_ids)) return $q;
 

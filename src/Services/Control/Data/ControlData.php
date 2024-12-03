@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\PaymentSubscription\Services\Control\Data;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\Helpers\Util;
 use Kakaprodo\PaymentSubscription\Models\Feature;
@@ -11,13 +12,14 @@ use Kakaprodo\PaymentSubscription\Models\Subscription;
 use Kakaprodo\PaymentSubscription\Services\Base\Data\BaseData;
 use Kakaprodo\PaymentSubscription\Models\Traits\HasSubscription;
 use Kakaprodo\PaymentSubscription\Models\Traits\HasActivablePlanFeature;
+use Kakaprodo\PaymentSubscription\Services\Plan\Data\Partial\OveridenFeaturePlanData;
 
 /**
  * @property HasSubscription $subscriber
  * @property HasActivablePlanFeature $activable
- * @property string|int $feature_activation_reference
+ * @property string|int $feature_activation_reference : available on when checking feature
  * @property Feature $feature
- * @property PaymentPlan $plan
+ * @property PaymentPlan $plan : available only when checking plan
  * @property Subscription $subscription
  * 
  * @property bool $should_cache
@@ -155,5 +157,106 @@ class ControlData extends BaseData
             },
             now()->addSeconds($this->cache_period)
         );
+    }
+
+    /**
+     * check subscription's trial period has expired
+     */
+    public function trialPeriodHasExpired()
+    {
+        if (
+            !$this->isInTrialPeriod() || !$this->subscription->trial_end_on
+        ) return null;
+
+        $period = Carbon::parse($this->subscription->trial_end_on);
+
+        return $period->isPast();
+    }
+
+    /**
+     * Check subscription supports trail period
+     */
+    public function isInTrialPeriod()
+    {
+        $this->throwWhenFieldAbsent(['subscriber']);
+
+        return $this->subscription->status === Subscription::STATUS_TRIAL_ACTIVE;
+    }
+
+    /**
+     * Fetch subscription remaining days when in trial
+     */
+    public function remainingDaysOfTrialPeriod()
+    {
+        $periodIsExpired = $this->trialPeriodHasExpired();
+
+        if ($periodIsExpired  === true || $periodIsExpired === null) return 0;
+
+        $endDate = Carbon::parse($this->subscription->trial_end_on);
+
+        return now()->startOfDay()->diffInDays($endDate);
+    }
+
+    /**
+     * Check subscription is active or trial active
+     */
+    public function subscriptionIsActive(): bool
+    {
+        if ($this->trialPeriodHasExpired() === false) return true;
+
+        return $this->subscription->status === Subscription::STATUS_ACTIVE;
+    }
+
+    /**
+     * Check subscription is suspended
+     */
+    public function subscriptionIsSuspended(): bool
+    {
+        return $this->subscription->status === Subscription::STATUS_SUSPENDED;
+    }
+
+    /**
+     * Check subscription is expired
+     */
+    public function subscriptionIsExpired(): bool
+    {
+        return $this->subscription->status === Subscription::STATUS_EXPIRED;
+    }
+
+    /**
+     * Check subscription is canceled
+     */
+    public function subscriptionIsCanceled(): bool
+    {
+        return $this->subscription->status === Subscription::STATUS_CANCELED;
+    }
+
+    /**
+     * Get the plan to which subscriber is subscribed to
+     */
+    public function subscriberPlan(): ?PaymentPlan
+    {
+        $this->throwWhenFieldAbsent(['subscriber']);
+
+        return $this->subscription->plan;
+    }
+
+    /**
+     * Get a feature whose value is overriden based on its pivot 
+     * @param string|Feature $featureSlug
+     */
+    public function getOverridenPlanFeature($featureSlug): ?OveridenFeaturePlanData
+    {
+        $this->throwWhenFieldAbsent(['subscriber']);
+
+        $feature = Feature::getOrFail($featureSlug);
+        $featurePlan = FeaturePlan::where('feature_id', $feature->id)
+            ->where('plan_id', $this->subscription->plan_id)
+            ->first();
+
+        return OveridenFeaturePlanData::make([
+            'feature' => $feature,
+            'feature_plan' =>  $featurePlan,
+        ]);
     }
 }

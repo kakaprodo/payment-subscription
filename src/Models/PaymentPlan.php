@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Kakaprodo\PaymentSubscription\Models\FeaturePlan;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Kakaprodo\PaymentSubscription\Models\Traits\HasEntityShareable;
+use Kakaprodo\PaymentSubscription\Services\Plan\Data\Partial\OveridenFeaturePlanData;
 
 class PaymentPlan extends Model
 {
@@ -60,5 +61,17 @@ class PaymentPlan extends Model
     public function subscriptions(): HasMany
     {
         return $this->hasMany(Subscription::class, 'plan_id');
+    }
+
+    /**
+     * List of features after replacing the pivot(feature_plan) 
+     * values with the actual feature values
+     */
+    public function overridenFeatures()
+    {
+        return $this->features->map(fn($feature) => OveridenFeaturePlanData::make([
+            'feature' => $feature,
+            'feature_plan' => $feature->pivot,
+        ]));
     }
 }

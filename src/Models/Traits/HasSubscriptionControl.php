@@ -6,9 +6,30 @@ use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\PaymentSub;
 use Kakaprodo\PaymentSubscription\Models\Feature;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
+use Kakaprodo\PaymentSubscription\Services\Plan\Data\Partial\OveridenFeaturePlanData;
 
 trait HasSubscriptionControl
 {
+
+    /**
+     * The subscription plan to which the current model
+     * is subscribed to
+     */
+    public function myPlan(): ?PaymentPlan
+    {
+        return PaymentSub::control()->data($this)->subscriberPlan();
+    }
+
+    /**
+     * Get a plan feature whose value is overriden based on its pivot 
+     * @param string|Feature $featureSlug
+     */
+    public function getOverridenPlanFeature($featureSlug): ?OveridenFeaturePlanData
+    {
+        return PaymentSub::control()->data($this)->getOverridenPlanFeature($featureSlug);
+    }
+
+
     /**
      * Check if a subscriber has a given plan
      * 
@@ -73,5 +94,75 @@ trait HasSubscriptionControl
                 'reference' => $reference
             ]
         );
+    }
+
+    /**
+     * Check if the current subscription is in trial period
+     */
+    public function isInTrialPeriod()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->isInTrialPeriod();
+    }
+
+    /**
+     * Check if the current subscription's trial period has expired
+     */
+    public function trialPeriodHasExpired()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->trialPeriodHasExpired();
+    }
+
+    /**
+     * Get the remaining days of the subscription in trial period
+     */
+    public function getTrialRemainingDays()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->remainingDaysOfTrialPeriod();
+    }
+
+    /**
+     * Check subscription is active or its trial is active
+     */
+    public function subscriptionIsActive()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->subscriptionIsActive();
+    }
+
+    /**
+     * Check subscription is suspended
+     */
+    public function subscriptionIsSuspended()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->subscriptionIsSuspended();
+    }
+
+    /**
+     * Check subscription is expired
+     */
+    public function subscriptionIsExpired()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->subscriptionIsExpired();
+    }
+
+    /**
+     * Check subscription is canceled
+     */
+    public function subscriptionIsCanceled()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->subscriptionIsCanceled();
     }
 }

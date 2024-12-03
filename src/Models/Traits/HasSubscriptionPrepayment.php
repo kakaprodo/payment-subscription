@@ -2,11 +2,12 @@
 
 namespace Kakaprodo\PaymentSubscription\Models\Traits;
 
+use Illuminate\Database\Eloquent\Model;
+use Kakaprodo\PaymentSubscription\PaymentSub;
 use Kakaprodo\PaymentSubscription\Models\Balance;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Kakaprodo\PaymentSubscription\Models\BalanceEntry;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Kakaprodo\PaymentSubscription\PaymentSub;
 
 /**
  * Trait for handling prepayment balances on models that need it.
@@ -46,6 +47,23 @@ trait HasSubscriptionPrepayment
     {
         return PaymentSub::balance()->hasMoney($this, $amount);
     }
+
+    /**
+     * Check if the balanceable has the specified amount including current billing 
+     * cycle usage of a given subscriber.
+     * 
+     * @var float $amount
+     * @var HasSubscription|Model $subscriber
+     */
+    public function balanceHasMoneyWithSubscriptionUsageIncluded($amount, $subscriber = null)
+    {
+        return PaymentSub::balance()->hasMoneyWithSubscriptionUsageIncluded(
+            $this,
+            $amount,
+            $subscriber ?? $this
+        );
+    }
+
 
     /**
      * Add a specified amount to the balance.
