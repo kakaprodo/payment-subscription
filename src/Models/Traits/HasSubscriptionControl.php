@@ -6,9 +6,30 @@ use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\PaymentSub;
 use Kakaprodo\PaymentSubscription\Models\Feature;
 use Kakaprodo\PaymentSubscription\Models\PaymentPlan;
+use Kakaprodo\PaymentSubscription\Services\Plan\Data\Partial\OveridenFeaturePlanData;
 
 trait HasSubscriptionControl
 {
+
+    /**
+     * The subscription plan to which the current model
+     * is subscribed to
+     */
+    public function myPlan(): ?PaymentPlan
+    {
+        return PaymentSub::control()->data($this)->subscriberPlan();
+    }
+
+    /**
+     * Get a plan feature whose value is overriden based on its pivot 
+     * @param string|Feature $featureSlug
+     */
+    public function getOverridenPlanFeature($featureSlug): ?OveridenFeaturePlanData
+    {
+        return PaymentSub::control()->data($this)->getOverridenPlanFeature($featureSlug);
+    }
+
+
     /**
      * Check if a subscriber has a given plan
      * 

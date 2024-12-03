@@ -27,14 +27,17 @@
 
 -   define trial period in config
 -   add possibility to subscribe with trial period
-    -   $user->subscribe('special-plan', [
+    -   $subscriber->subscribe('special-plan', [
         'is_trial' => true,
         ]);
 -   added new method:
-    -   dump($user->isInTrialPeriod());
-    -   dump($user->trialPeriodHasExpired());
-    -   dump($user->getTrialRemainingDays());
-    -   dump($user->subscriptionIsActive());
-    -   dump($user->subscriptionIsSuspended());
-    -   dump($user->subscriptionIsExpired());
-    -   dump($user->subscriptionIsCanceled());
+    -   $subscriber->isInTrialPeriod();
+    -   $subscriber->trialPeriodHasExpired();
+    -   $subscriber->getTrialRemainingDays();
+    -   $subscriber->subscriptionIsActive();
+    -   $subscriber->subscriptionIsSuspended();
+    -   $subscriber->subscriptionIsExpired();
+    -   $subscriber->subscriptionIsCanceled();
+    -   $subscriber->myPlan();
+    -   $subscriber->getOverridenPlanFeature($featureSlug|$featureModel)
+    -   $balanceable->balanceHasMoneyWithSubscriptionUsageIncluded()

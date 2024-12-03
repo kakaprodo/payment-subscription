@@ -8,7 +8,7 @@ use Kakaprodo\PaymentSubscription\Services\Base\Data\BaseData;
 use Kakaprodo\PaymentSubscription\Services\Plan\Data\Partial\OveridenFeaturePlanData;
 
 /**
- * @property string $type
+ * @property string $type: filter by plan type if provided
  */
 class AllPlanData extends BaseData
 {
@@ -40,13 +40,5 @@ class AllPlanData extends BaseData
         }
 
         return collect($plans);
-        // return $this->plans()->map(function ($plan) {
-        //     $newPlan = $plan;
-        //     $newPlan->features = $plan->features->map(fn($feature) => OveridenFeaturePlanData::make([
-        //         'feature' => $feature,
-        //         'feature_plan' => $feature->pivot,
-        //     ]));
-        //     return $newPlan;
-        // });
     }
 }

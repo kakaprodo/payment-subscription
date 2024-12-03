@@ -12,6 +12,7 @@ use Kakaprodo\PaymentSubscription\Models\Subscription;
 use Kakaprodo\PaymentSubscription\Services\Base\Data\BaseData;
 use Kakaprodo\PaymentSubscription\Models\Traits\HasSubscription;
 use Kakaprodo\PaymentSubscription\Models\Traits\HasActivablePlanFeature;
+use Kakaprodo\PaymentSubscription\Services\Plan\Data\Partial\OveridenFeaturePlanData;
 
 /**
  * @property HasSubscription $subscriber
@@ -228,5 +229,34 @@ class ControlData extends BaseData
     public function subscriptionIsCanceled(): bool
     {
         return $this->subscription->status === Subscription::STATUS_CANCELED;
+    }
+
+    /**
+     * Get the plan to which subscriber is subscribed to
+     */
+    public function subscriberPlan(): ?PaymentPlan
+    {
+        $this->throwWhenFieldAbsent(['subscriber']);
+
+        return $this->subscription->plan;
+    }
+
+    /**
+     * Get a feature whose value is overriden based on its pivot 
+     * @param string|Feature $featureSlug
+     */
+    public function getOverridenPlanFeature($featureSlug): ?OveridenFeaturePlanData
+    {
+        $this->throwWhenFieldAbsent(['subscriber']);
+
+        $feature = Feature::getOrFail($featureSlug);
+        $featurePlan = FeaturePlan::where('feature_id', $feature->id)
+            ->where('plan_id', $this->subscription->plan_id)
+            ->first();
+
+        return OveridenFeaturePlanData::make([
+            'feature' => $feature,
+            'feature_plan' =>  $featurePlan,
+        ]);
     }
 }
