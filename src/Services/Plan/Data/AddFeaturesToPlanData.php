@@ -74,10 +74,7 @@ class AddFeaturesToPlanData extends BaseData
 
     private function getNewFeatureIds(): Collection
     {
-        return Feature::whereDoesntHave('plans', function ($q) {
-            $q->where((new PaymentPlan())->getTable() . '.id', $this->plan->id);
-        })->whereIn('slug', $this->featureSlugs())
-            ->get();
+        return Feature::whereIn('slug', $this->featureSlugs())->get();
     }
 
     public function formatFeaturesToAdd()

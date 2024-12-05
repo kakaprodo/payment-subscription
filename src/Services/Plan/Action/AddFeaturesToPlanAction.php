@@ -14,6 +14,11 @@ class AddFeaturesToPlanAction extends CustomActionBuilder
 
         if ($formattedFeaturePlan->isEmpty()) return;
 
-        FeaturePlan::insert($formattedFeaturePlan->all());
+        foreach ($formattedFeaturePlan as $featurePlanInfo) {
+            FeaturePlan::updateOrCreate([
+                'feature_id' => $featurePlanInfo['feature_id'],
+                'plan_id' => $featurePlanInfo['plan_id'],
+            ], $featurePlanInfo);
+        }
     }
 }

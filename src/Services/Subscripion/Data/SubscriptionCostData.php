@@ -94,11 +94,7 @@ class SubscriptionCostData extends BaseData
             ->filter(fn($featureCost) => $featureCost > 0)
             ->all();
 
-        $this->totalActivatedFeature =  $overridenPlanFeatures->sum(
-            function (OveridenFeaturePlanData $data) {
-                return is_numeric($data->cost) ? $data->cost : 0;
-            }
-        );
+        $this->totalActivatedFeature =  collect($this->activatedFeatureItems)->sum();
     }
 
     /**
@@ -122,9 +118,9 @@ class SubscriptionCostData extends BaseData
     {
         $initialCost = $this->plan->is_free ? 0 : $this->plan->initial_cost;
 
-        $this->cost = ($this->shortConsumptionList['total'] ?? 0)
-            +  $initialCost
-            +  $this->totalActivatedFeature;
+        $this->initialCost = ($this->shortConsumptionList['total'] ?? 0) +  $initialCost;
+
+        $this->cost = $this->initialCost +  $this->totalActivatedFeature;
 
         $this->discountAmount =  round($this->discount ? (($this->cost * $this->discount->percentage) / 100) : 0, 2);
 
@@ -138,6 +134,7 @@ class SubscriptionCostData extends BaseData
     {
         $netCost = $this->netCost();
         return [
+            'initial_cost' => $this->initialCost,
             'consumptions' => $this->shortConsumptionList['list'] ?? [],
             'activated_functionalities' => $this->activatedFeatureItems,
             'cost' => $this->cost,
