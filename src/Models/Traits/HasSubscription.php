@@ -144,14 +144,18 @@ trait HasSubscription
      * @param string|Discount $discount
      * @param ?Model $activable
      */
-    public function disableSubscriptionFeature($feature, ?Model $activable = null)
-    {
+    public function disableSubscriptionFeature(
+        $feature,
+        ?Model $activable = null,
+        array $options = []
+    ) {
         return PaymentSub::subscription()->toggleFeatureActivation(
             $this,
             [
                 'feature' => $feature,
                 'activable' => $activable,
-                'activating' => false
+                'activating' => false,
+                ...$options
             ]
         );
     }

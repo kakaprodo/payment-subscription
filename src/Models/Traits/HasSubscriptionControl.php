@@ -24,9 +24,9 @@ trait HasSubscriptionControl
      * Get a plan feature whose value is overriden based on its pivot 
      * @param string|Feature $featureSlug
      */
-    public function getOverridenPlanFeature($featureSlug): ?OveridenFeaturePlanData
+    public function getOveridenPlanFeature($featureSlug): ?OveridenFeaturePlanData
     {
-        return PaymentSub::control()->data($this)->getOverridenPlanFeature($featureSlug);
+        return PaymentSub::control()->data($this)->getOveridenPlanFeature($featureSlug);
     }
 
 

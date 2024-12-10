@@ -245,7 +245,7 @@ class ControlData extends BaseData
      * Get a feature whose value is overriden based on its pivot 
      * @param string|Feature $featureSlug
      */
-    public function getOverridenPlanFeature($featureSlug): ?OveridenFeaturePlanData
+    public function getOveridenPlanFeature($featureSlug): ?OveridenFeaturePlanData
     {
         $this->throwWhenFieldAbsent(['subscriber']);
 

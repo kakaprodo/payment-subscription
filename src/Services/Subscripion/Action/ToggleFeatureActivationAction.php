@@ -11,8 +11,18 @@ class ToggleFeatureActivationAction extends CustomActionBuilder
     public function handle(ToggleFeatureActivationData $data): bool
     {
         if (!$data->activating) {
-            $data->subscription->activated_features()
-                ->detach($data->feature->id);
+            $query = $data->subscription->activated_features();
+
+            if ($data->activable) {
+                $query->wherePivot('activable_id', $data->activable->id)
+                    ->wherePivot('activable_type', get_class($data->activable));
+            }
+
+            if ($data->reference !== null) {
+                $query->wherePivot('reference', $data->reference);
+            }
+
+            $query->detach($data->feature->id);
             return true;
         }
 

@@ -116,11 +116,11 @@ class SubscriptionCostData extends BaseData
      */
     public function netCost()
     {
-        $initialCost = $this->plan->is_free ? 0 : $this->plan->initial_cost;
+        $this->initialCost = (float) ($this->plan->is_free ? 0 : $this->plan->initial_cost);
 
-        $this->initialCost = ($this->shortConsumptionList['total'] ?? 0) +  $initialCost;
+        $consumptionCost = ($this->shortConsumptionList['total'] ?? 0);
 
-        $this->cost = $this->initialCost +  $this->totalActivatedFeature;
+        $this->cost = round($this->initialCost + $consumptionCost +  $this->totalActivatedFeature, 2);
 
         $this->discountAmount =  round($this->discount ? (($this->cost * $this->discount->percentage) / 100) : 0, 2);
 

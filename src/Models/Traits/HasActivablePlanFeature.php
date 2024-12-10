@@ -25,6 +25,19 @@ trait HasActivablePlanFeature
             'reference',
             'subscription_id',
             'description'
-        ])->wherePivot('activable_type', static::class);
+        ])->withTimestamps()->wherePivot('activable_type', static::class);
+    }
+
+    public function getActivatedFeature($featureSlug, $reference = null): ?Feature
+    {
+        $query = $this->activated_features()
+            ->where(((new Feature())->getTable()) . '.slug', $featureSlug);
+
+        if ($reference !== null) $query->wherePivot(
+            ((new FeatureSubscripion())->getTable()) . '.reference',
+            $reference
+        );
+
+        return $query->first();
     }
 }

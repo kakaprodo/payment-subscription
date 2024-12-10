@@ -23,7 +23,11 @@
     - money verification for specified seconds
     - amount for sepcified minutes
 
-7. Support Trial period
+7. supported new subscription status
+    - trial_active
+    - trial_expired
+    - suspended
+8. Support Trial period
 
 -   define trial period in config
 -   add possibility to subscribe with trial period
@@ -41,14 +45,30 @@
     -   $subscriber->subscriptionIsExpired();
     -   $subscriber->subscriptionIsCanceled();
     -   $subscriber->myPlan();
-    -   $subscriber->getOverridenPlanFeature($featureSlug|$featureModel)
+    -   $subscriber->getOveridenPlanFeature($featureSlug|$featureModel)
     -   $balanceable->balanceHasMoneyWithSubscriptionUsageIncluded()
 
 10. Feature activation
 
 -   support the ability to provide an action `description`
 -   the method activateSubscriptionFeature accept now a fourth argument, an array options where description can be passed
+-   get an activated feature: from actiovable trait we have added the method `getActivatedFeature`
 
 11. consumption
 
 -   added `cost` brut on costwithdetails
+
+12. Connect feature to plan
+
+    -   Doc improvement: the connection will be created only if it does not exist otherwise update connection
+
+13. Subscription Expiration Events
+
+-   we have improve the command to detect expired subscription
+    -   it can handle subscription active and in trial active
+    -   update their status accordigly: expired or trial_expired
+-   you can register listener on subscription event expiration
+    -   on subscription expired
+    -   on trial period expired
+-   added the supported of detecting expering subscription
+    -   and add event when some are founds.
