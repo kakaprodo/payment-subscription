@@ -71,4 +71,7 @@
     -   on subscription expired
     -   on trial period expired
 -   added the supported of detecting expering subscription
-    -   and add event when some are founds.
+    -   and event are triggered when some are founds.
+
+14. Moved the seedable data to new configuration file: payment-subscription-seeder
+    -   the package will continue supporting the old logic where seeders are loaded from the main config file if developer choose to remain with one file

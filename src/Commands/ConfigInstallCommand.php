@@ -13,14 +13,22 @@ class ConfigInstallCommand extends Command
     public function handle()
     {
         $params = [
-            '--provider' => "Kakaprodo\PaymentSubscription\PaymentSubscriptionServiceProvider",
-            '--tag' => "payment-subscription"
+            [
+                '--provider' => "Kakaprodo\PaymentSubscription\PaymentSubscriptionServiceProvider",
+                '--tag' => "payment-subscription"
+            ],
+            [
+                '--provider' => "Kakaprodo\PaymentSubscription\PaymentSubscriptionServiceProvider",
+                '--tag' => "payment-subscription-seeder"
+            ]
         ];
 
-        if ($this->option('force') === true) {
-            $params['--force'] = true;
-        }
+        foreach ($params as $param) {
+            if ($this->option('force') === true) {
+                $param['--force'] = true;
+            }
 
-        $this->call('vendor:publish', $params);
+            $this->call('vendor:publish', $param);
+        }
     }
 }

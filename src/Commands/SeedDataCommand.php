@@ -13,22 +13,28 @@ class SeedDataCommand extends Command
 
     public function handle()
     {
-        if (($plans = config('payment-subscription.seeds.plans')) != []) {
+        $seeders = config('payment-subscription-seeder.seeds') ?? config('payment-subscription.seeds');
+
+        if ($seeders === null) {
+            return $this->error('Make sure you have registered your seeds in the configuration file.');
+        }
+
+        if (($plans = $seeders['plans']) != []) {
             PaymentSub::plan()->createMany($plans);
             $this->info('Recorded plan seeds');
         }
 
-        if (($features = config('payment-subscription.seeds.features')) != []) {
+        if (($features = $seeders['features']) != []) {
             PaymentSub::feature()->createMany($features);
             $this->info('Recorded feature seeds');
         }
 
-        if (($discounts = config('payment-subscription.seeds.discounts')) != []) {
+        if (($discounts = $seeders['discounts']) != []) {
             PaymentSub::discount()->createMany($discounts);
             $this->info('Recorded discount seeds');
         }
 
-        if (($connectFeatToPlans = config('payment-subscription.seeds.connect_features_to_plan')) != []) {
+        if (($connectFeatToPlans = $seeders['connect_features_to_plan']) != []) {
             foreach ($connectFeatToPlans as $planSlug => $features) {
                 if (empty($features)) continue;
 

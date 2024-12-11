@@ -53,6 +53,10 @@ class PaymentSubscriptionServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/config/payment-subscription.php' => config_path('payment-subscription.php'),
         ], 'payment-subscription');
+
+        $this->publishes([
+            __DIR__ . '/config/payment-subscription-seeder.php' => config_path('payment-subscription-seeder.php'),
+        ], 'payment-subscription-seeder');
     }
 
     protected function stackToLoad()
