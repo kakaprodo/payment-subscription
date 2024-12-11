@@ -25,6 +25,7 @@ class Subscription extends Model
     const STATUS_CANCELED = 'canceled';
     const STATUS_TRIAL_ACTIVE = 'trial_active';
     const STATUS_TRIAL_EXPIRED = 'trial_expired';
+    const STATUS_GRACE = 'grace';
     const STATUS_SUSPENDED = 'suspended';
 
     static $supportedStatus = [
@@ -33,6 +34,7 @@ class Subscription extends Model
         self::STATUS_CANCELED,
         self::STATUS_TRIAL_ACTIVE,
         self::STATUS_TRIAL_EXPIRED,
+        self::STATUS_GRACE,
         self::STATUS_SUSPENDED,
     ];
     /**

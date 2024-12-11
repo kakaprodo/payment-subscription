@@ -127,6 +127,18 @@ trait HasSubscriptionControl
     }
 
     /**
+     * Get the remaining days of a subscription in grace period
+     */
+    public function getRemainingDaysOfGracePeriod()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->remainingDaysOfGracePeriod();
+    }
+
+
+
+    /**
      * Check subscription is active or its trial is active
      */
     public function subscriptionIsActive()
@@ -144,6 +156,16 @@ trait HasSubscriptionControl
         return PaymentSub::control()
             ->data($this)
             ->subscriptionIsSuspended();
+    }
+
+    /**
+     * Check subscription is in grace period
+     */
+    public function subscriptionInGracePeriod()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->subscriptionIsInGrace();
     }
 
     /**

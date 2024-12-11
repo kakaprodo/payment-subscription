@@ -198,6 +198,18 @@ class ControlData extends BaseData
     }
 
     /**
+     * Fetch subscription remaining days when in grace period
+     */
+    public function remainingDaysOfGracePeriod()
+    {
+        if (!$this->subscriptionIsInGrace()) return 0;
+
+        $endDate = Carbon::parse($this->subscription->expired_at);
+
+        return now()->startOfDay()->diffInDays($endDate);
+    }
+
+    /**
      * Check subscription is active or trial active
      */
     public function subscriptionIsActive(): bool
@@ -213,6 +225,14 @@ class ControlData extends BaseData
     public function subscriptionIsSuspended(): bool
     {
         return $this->subscription->status === Subscription::STATUS_SUSPENDED;
+    }
+
+    /**
+     * Check subscription is in grace period
+     */
+    public function subscriptionIsInGrace(): bool
+    {
+        return $this->subscription->status === Subscription::STATUS_GRACE;
     }
 
     /**

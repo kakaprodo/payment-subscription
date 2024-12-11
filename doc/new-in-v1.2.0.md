@@ -26,6 +26,7 @@
 7. supported new subscription status
     - trial_active
     - trial_expired
+    - grace
     - suspended
 8. Support Trial period
 
@@ -66,12 +67,16 @@
 
 -   we have improve the command to detect expired subscription
     -   it can handle subscription active and in trial active
-    -   update their status accordigly: expired or trial_expired
+    -   update their status accordigly: expired , trial_expired, or in grace period
+    -   you can configure number of days of the grace period in the configuration file: under control.grace_period
 -   you can register listener on subscription event expiration
     -   on subscription expired
     -   on trial period expired
--   added the supported of detecting expering subscription
+-   added the supported of detecting expiring subscription
+    -   in config file set: subscription_expiring_before : to check days before a subscription can be considered as about to be expired
     -   and event are triggered when some are founds.
+-   we have added a command to suspended subscriptions whose grace period expires
+    -   with possibility to dispatch an event for each subscription
 
 14. Moved the seedable data to new configuration file: payment-subscription-seeder
     -   the package will continue supporting the old logic where seeders are loaded from the main config file if developer choose to remain with one file

@@ -41,8 +41,11 @@ class DetectExpiredSubscriptionCommand extends Command
                 }
 
                 if (!empty($expiredIds)) {
+                    $graceDays = config('payment-subscription.control.grace_period');
+
                     Subscription::whereIn('id', $expiredIds)->update([
-                        'status' => Subscription::STATUS_EXPIRED
+                        'status' => $graceDays > 0 ? Subscription::STATUS_GRACE : Subscription::STATUS_EXPIRED,
+                        ...($graceDays > 0 ? ['expired_at' => now()->addDays($graceDays)] : [])
                     ]);
                 }
 

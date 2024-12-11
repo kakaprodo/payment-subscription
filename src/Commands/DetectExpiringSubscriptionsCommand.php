@@ -12,12 +12,14 @@ class DetectExpiringSubscriptionsCommand extends Command
 {
     protected $signature = 'payment-subscription:detect-expiring';
 
-    protected $description = 'Command to detect all subscriptions that are expering within 3 days';
+    protected $description = 'Command to detect all subscriptions that are expiring within some days(3)';
 
     public function handle()
     {
+        $expiringBeforeDays = config('payment-subscription.control.subscription_expiring_before', 3);
+
         Subscription::with(['plan', 'subscriptionable'])
-            ->whereDate('expired_at', today()->addDays(3))
+            ->whereDate('expired_at', today()->addDays($expiringBeforeDays))
             ->whereIn('status', [
                 Subscription::STATUS_ACTIVE,
                 Subscription::STATUS_TRIAL_ACTIVE
