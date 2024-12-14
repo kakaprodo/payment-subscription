@@ -20,6 +20,7 @@ class Subscription extends Model
         'trial_end_on'
     ];
 
+    const STATUS_FREE_ACTIVE = 'free_active';
     const STATUS_ACTIVE = 'active';
     const STATUS_EXPIRED = 'expired';
     const STATUS_CANCELED = 'canceled';

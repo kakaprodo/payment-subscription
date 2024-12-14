@@ -2,9 +2,10 @@
 
 namespace Kakaprodo\PaymentSubscription\Services\Subscripion;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
-use Kakaprodo\PaymentSubscription\Models\Discount;
 use Kakaprodo\PaymentSubscription\Models\Feature;
+use Kakaprodo\PaymentSubscription\Models\Discount;
 use Kakaprodo\PaymentSubscription\Models\Subscription;
 use Kakaprodo\PaymentSubscription\Services\Base\ServiceBase;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\Data\SubscriptionCostData;
@@ -87,6 +88,18 @@ class SubscripionService extends ServiceBase
             'subscriber' => $subscriber,
             ...$filterOptions
         ]));
+    }
+
+    /**
+     * Retrieve and cash the current net cost of the subscription
+     */
+    public function cachedNetCost(Model $subscriber)
+    {
+        return Cache::remember(
+            SubscriptionCostData::getCachedSubscriptionCostKey($subscriber),
+            now()->addMinute(),
+            fn() => $this->cost($subscriber)->netCost()
+        );
     }
 
     /**

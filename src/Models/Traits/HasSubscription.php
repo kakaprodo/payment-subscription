@@ -43,6 +43,16 @@ trait HasSubscription
     }
 
     /**
+     * Retrieve and cash the current net cost of the subscription
+     */
+    public function subscriptionCachedNetCost()
+    {
+        return PaymentSub::subscription()->cachedNetCost($this);
+    }
+
+
+
+    /**
      * Add a discount to the model's subscription
      * 
      * @param string|Discount $discount

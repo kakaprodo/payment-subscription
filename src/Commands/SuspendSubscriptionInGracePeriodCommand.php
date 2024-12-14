@@ -20,13 +20,14 @@ class SuspendSubscriptionInGracePeriodCommand extends Command
             ->where('status', Subscription::STATUS_GRACE)
             ->chunkById(1000, function ($subscriptions) {
                 $expiredIds = [];
-                foreach ($subscriptions as $subscription) {
-                    try {
+                try {
+                    foreach ($subscriptions as $subscription) {
+
                         $expiredIds[] = $subscription->id;
                         event(new GraceSubscriptionSuspended($subscription));
-                    } catch (\Throwable $th) {
-                        Log::error('SUBSCRIPTION CMD - suspend those in grace period :', ['exception' => $th]);
                     }
+                } catch (\Throwable $th) {
+                    Log::error('SUBSCRIPTION CMD - suspend those in grace period :', ['exception' => $th]);
                 }
 
                 if (!empty($expiredIds)) {

@@ -24,6 +24,7 @@
     - amount for sepcified minutes
 
 7. supported new subscription status
+    - free_active
     - trial_active
     - trial_expired
     - grace
@@ -45,6 +46,9 @@
     -   $subscriber->subscriptionIsSuspended();
     -   $subscriber->subscriptionIsExpired();
     -   $subscriber->subscriptionIsCanceled();
+    -   $subscriber->subscriptionIsFree() : when a plan is_free = true
+    -   $subscriber->onceHadTrialPeriod()
+    -   $subscriber->subscriptionCachedNetCost()
     -   $subscriber->myPlan();
     -   $subscriber->getOveridenPlanFeature($featureSlug|$featureModel)
     -   $balanceable->balanceHasMoneyWithSubscriptionUsageIncluded()
@@ -69,6 +73,7 @@
     -   it can handle subscription active and in trial active
     -   update their status accordigly: expired , trial_expired, or in grace period
     -   you can configure number of days of the grace period in the configuration file: under control.grace_period
+    -   we have added new method on the subscriber model: getRemainingDaysOfGracePeriod()
 -   you can register listener on subscription event expiration
     -   on subscription expired
     -   on trial period expired

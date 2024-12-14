@@ -46,13 +46,22 @@ class CreateSubscriptionData extends BaseData
         ];
     }
 
+
+    private function detectSubscriptionStatus()
+    {
+        if ($this->trial_end_on) return Subscription::STATUS_TRIAL_ACTIVE;
+
+        if ($this->plan->is_free) return Subscription::STATUS_FREE_ACTIVE;
+
+        return Subscription::STATUS_ACTIVE;
+    }
     /**
      * data to save in db
      */
     public function dataForDb()
     {
         return [
-            'status' =>  $this->trial_end_on ? Subscription::STATUS_TRIAL_ACTIVE : Subscription::STATUS_ACTIVE,
+            'status' =>  $this->detectSubscriptionStatus(),
             'plan_id' => $this->plan->id,
             'discount_id' => $this->discount?->id,
             'expired_at' => $this->expired_at,

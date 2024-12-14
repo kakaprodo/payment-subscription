@@ -24,8 +24,9 @@ class DetectExpiredSubscriptionCommand extends Command
             ])->chunkById(1000, function ($subscriptions) {
                 $expiredIds = [];
                 $trialExpiredIds = [];
-                foreach ($subscriptions as $subscription) {
-                    try {
+                try {
+                    foreach ($subscriptions as $subscription) {
+
                         if ($subscription->status === Subscription::STATUS_ACTIVE) {
                             $expiredIds[] = $subscription->id;
                             event(new SubscriptionExpired($subscription));
@@ -35,9 +36,9 @@ class DetectExpiredSubscriptionCommand extends Command
                             $trialExpiredIds[]  = $subscription->id;
                             event(new TrialPeriodExpired($subscription));
                         }
-                    } catch (\Throwable $th) {
-                        Log::error('SUBSCRIPTION CMD - detect expired error :', ['exception' => $th]);
                     }
+                } catch (\Throwable $th) {
+                    Log::error('SUBSCRIPTION CMD - detect expired error :', ['exception' => $th]);
                 }
 
                 if (!empty($expiredIds)) {

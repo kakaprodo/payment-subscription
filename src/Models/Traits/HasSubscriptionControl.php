@@ -187,4 +187,25 @@ trait HasSubscriptionControl
             ->data($this)
             ->subscriptionIsCanceled();
     }
+
+    /**
+     * Check subscription is free
+     */
+    public function subscriptionIsFree()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->subscriptionIsFree();
+    }
+
+    /**
+     * Check if the current subscriber has already been in trial 
+     * period
+     */
+    public function onceHadTrialPeriod()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->subscriptionHadTrialPeriod();
+    }
 }
