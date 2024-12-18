@@ -23,7 +23,9 @@ class ShortConsumptionListData extends BaseData
             'subscriber?' => $this->property(Model::class)->customValidator(
                 fn($subscriber) => Util::forceClassTrait(HasSubscription::class, $subscriber)
             ),
-            'subscription?' => $this->property()->castTo(fn() => $this->subscriber->subscription),
+            'subscription?' => $this->property()->castTo(
+                fn($subscription) => $subscription ?? $this->subscriber->subscription
+            ),
             'is_paid?' => $this->property()->default(false),
             'all?' => $this->property()->default(false),
         ];

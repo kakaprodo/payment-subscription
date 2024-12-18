@@ -49,7 +49,9 @@ class SubscriptionCostData extends BaseData
             'subscriber?' => $this->property(Model::class)->customValidator(
                 fn($subscriber) => Util::forceClassTrait(HasSubscription::class, $subscriber)
             ),
-            'subscription?' => $this->property()->castTo(fn() => $this->subscriber->subscription),
+            'subscription?' => $this->property()->castTo(
+                fn($subscription) => $subscription ?? $this->subscriber->subscription
+            ),
             'is_paid?' => $this->property()->default(false),
             'all?' => $this->property()->default(false),
         ];
@@ -105,7 +107,11 @@ class SubscriptionCostData extends BaseData
         if (!empty($this->shortConsumptionList)) return $this->shortConsumptionList;
 
         $this->shortConsumptionList = $this->subscriber->listGroupedSubscriptionItems(
-            $this->only(['is_paid', 'all'])
+            $this->only([
+                'is_paid',
+                'all',
+                'subscription'
+            ])
         );
 
         return $this->shortConsumptionList;
@@ -130,7 +136,7 @@ class SubscriptionCostData extends BaseData
     /**
      * Get consumed items and price, then calculate total cost
      */
-    public function costWithDetails()
+    public function costWithDetails(): array
     {
         $netCost = $this->netCost();
         return [
