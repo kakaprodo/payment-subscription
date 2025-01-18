@@ -9,6 +9,8 @@ use Kakaprodo\PaymentSubscription\Models\Discount;
 use Kakaprodo\PaymentSubscription\Models\Subscription;
 use Kakaprodo\PaymentSubscription\Services\Base\ServiceBase;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\Data\SubscriptionCostData;
+use Kakaprodo\PaymentSubscription\Services\Subscripion\Data\CancelSubscriptionData;
+use Kakaprodo\PaymentSubscription\Services\Subscripion\Action\CancelSubscriptionAction;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\Action\CreateSubscriptionAction;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\Action\ToggleFeatureActivationAction;
 use Kakaprodo\PaymentSubscription\Services\Subscripion\Action\ChangeSubscriptionStatusAction;
@@ -70,12 +72,17 @@ class SubscripionService extends ServiceBase
      * 
      * @param Model $subscriber
      * @param string $status : should be one of the ones registered in the config
+     * @param array $options 
      */
-    public function changeStatus(Model $subscriber, $status): Subscription
-    {
+    public function changeStatus(
+        Model $subscriber,
+        $status,
+        $options = []
+    ): Subscription {
         return ChangeSubscriptionStatusAction::process([
             'subscriber' => $subscriber,
-            'status' => $status
+            'status' => $status,
+            ...$options
         ]);
     }
 
@@ -130,5 +137,28 @@ class SubscripionService extends ServiceBase
         $subscription->expired_at = $period ?? now()->addMonth();
         $subscription->save();
         return  $subscription;
+    }
+
+    /**
+     * Cancel subscription with possibility to validate restriction on
+     * number of cancellation within a given period
+     * 
+     * @param Model $subscriber
+     */
+    public function cancel(Model $subscriber): ?Subscription
+    {
+        return CancelSubscriptionAction::process(['subscriber' => $subscriber]);
+    }
+
+    /**
+     * Check subscriber is able to cancel a subscription
+     * 
+     * @param Model $subscriber
+     */
+    public function canCancel(Model $subscriber): bool
+    {
+        return CancelSubscriptionData::make([
+            'subscriber' => $subscriber
+        ])->canCancel();
     }
 }

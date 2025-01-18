@@ -61,7 +61,7 @@ class BalanceData extends BaseData
         return Util::cacheWhen(
             $cachePeriod !== null,
             $this->getCacheBalanceAmountKey($this->balanceable),
-            fn() => $this->balance()->amount,
+            fn() => $this->balance()->amount ?? 0,
             now()->addMinutes($cachePeriod ?? 1)
         );
     }

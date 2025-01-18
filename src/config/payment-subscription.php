@@ -110,6 +110,7 @@ return [
     | - 'subscription_expiring_before' : days before what subscription can be consider as about to be expired
     | - 'grace_period': days of grace to give to subscribers once their subscription is expired. 
     |                   when null means  grace period is not supported
+    | - `subscription_re_cancellation_days` : Number of waiting Days for the next cancellation after initial one
     |
     */
     'control' => [
@@ -118,6 +119,7 @@ return [
         'trial_period' => 30,
         'subscription_expiring_before' => 3,
         'grace_period' => null,
+        'subscription_re_cancellation_days' => 30
     ],
 
     /*

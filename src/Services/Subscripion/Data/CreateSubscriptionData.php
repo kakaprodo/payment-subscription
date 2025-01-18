@@ -46,6 +46,12 @@ class CreateSubscriptionData extends BaseData
         ];
     }
 
+    public function boot()
+    {
+        // usefull when swtiching between plans
+        $this->deleteCachedSubscriptionCostKey($this->subscriber);
+    }
+
 
     private function detectSubscriptionStatus()
     {

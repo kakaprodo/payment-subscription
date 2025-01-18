@@ -54,5 +54,7 @@ class ToggleFeatureActivationData extends BaseData
                 "Make the feature {$this->feature->name} activable first"
             );
         }
+
+        $this->deleteCachedSubscriptionCostKey($this->subscriber);
     }
 }

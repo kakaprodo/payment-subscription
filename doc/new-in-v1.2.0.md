@@ -85,3 +85,14 @@
 
 14. Moved the seedable data to new configuration file: payment-subscription-seeder
     -   the package will continue supporting the old logic where seeders are loaded from the main config file if developer choose to remain with one file
+15. Subscription Cancellation
+
+    -   migration is needed for the canceled_at column to be added to the subscription table
+    -   Control number of cancellation within a given scope
+        -   setup in the config: `subscription_re_cancellation_days`
+        -   added method : canCancelSubscription : to check subscriber is able to cancel
+        -   added method: cancelSubscription : to cancel subscription of the current subscriber
+
+16. change subscription
+    -   when changimg subscription status, you can provide also the expiration time
+    -   when the status to change is equal to canceled, directly the package will set the canceled at value on the subscriptiion model

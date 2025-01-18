@@ -27,6 +27,25 @@ trait HasSubscription
     }
 
     /**
+     * Cancel subscription after checking if subscriber is authorized 
+     * to do so
+     */
+    public function cancelSubscription(): ?Subscription
+    {
+        return PaymentSub::subscription()->cancel($this);
+    }
+
+    /**
+     * Check subscriber is able to cancel a subscription
+     */
+    public function canCancelSubscription(): bool
+    {
+        return PaymentSub::subscription()->canCancel($this);
+    }
+
+
+
+    /**
      * the subscription plan of the current model
      */
     public function subscription()

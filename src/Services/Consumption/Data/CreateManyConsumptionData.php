@@ -23,4 +23,9 @@ class CreateManyConsumptionData extends BaseData
             'items' => $this->property()->isArrayOf(SaveConsumptionData::class),
         ];
     }
+
+    public function boot()
+    {
+        $this->deleteCachedSubscriptionCostKey($this->subscriber);
+    }
 }
