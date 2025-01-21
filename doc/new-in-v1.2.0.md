@@ -23,14 +23,22 @@
     - money verification for specified seconds
     - amount for sepcified minutes
 
-7. Support Trial period
+7. supported new subscription status
+    - free_active
+    - trial_active
+    - trial_expired
+    - grace
+    - suspended
+8. Support Trial period
 
 -   define trial period in config
 -   add possibility to subscribe with trial period
     -   $subscriber->subscribe('special-plan', [
         'is_trial' => true,
         ]);
--   added new method:
+
+9.  added new method:
+
     -   $subscriber->isInTrialPeriod();
     -   $subscriber->trialPeriodHasExpired();
     -   $subscriber->getTrialRemainingDays();
@@ -38,6 +46,53 @@
     -   $subscriber->subscriptionIsSuspended();
     -   $subscriber->subscriptionIsExpired();
     -   $subscriber->subscriptionIsCanceled();
+    -   $subscriber->subscriptionIsFree() : when a plan is_free = true
+    -   $subscriber->onceHadTrialPeriod()
+    -   $subscriber->subscriptionCachedNetCost()
     -   $subscriber->myPlan();
-    -   $subscriber->getOverridenPlanFeature($featureSlug|$featureModel)
+    -   $subscriber->getOveridenPlanFeature($featureSlug|$featureModel)
     -   $balanceable->balanceHasMoneyWithSubscriptionUsageIncluded()
+
+10. Feature activation
+
+-   support the ability to provide an action `description`
+-   the method activateSubscriptionFeature accept now a fourth argument, an array options where description can be passed
+-   get an activated feature: from actiovable trait we have added the method `getActivatedFeature`
+
+11. consumption
+
+-   added `cost` brut on costwithdetails
+
+12. Connect feature to plan
+
+    -   Doc improvement: the connection will be created only if it does not exist otherwise update connection
+
+13. Subscription Expiration Events
+
+-   we have improve the command to detect expired subscription
+    -   it can handle subscription active and in trial active
+    -   update their status accordigly: expired , trial_expired, or in grace period
+    -   you can configure number of days of the grace period in the configuration file: under control.grace_period
+    -   we have added new method on the subscriber model: getRemainingDaysOfGracePeriod()
+-   you can register listener on subscription event expiration
+    -   on subscription expired
+    -   on trial period expired
+-   added the supported of detecting expiring subscription
+    -   in config file set: subscription_expiring_before : to check days before a subscription can be considered as about to be expired
+    -   and event are triggered when some are founds.
+-   we have added a command to suspended subscriptions whose grace period expires
+    -   with possibility to dispatch an event for each subscription
+
+14. Moved the seedable data to new configuration file: payment-subscription-seeder
+    -   the package will continue supporting the old logic where seeders are loaded from the main config file if developer choose to remain with one file
+15. Subscription Cancellation
+
+    -   migration is needed for the canceled_at column to be added to the subscription table
+    -   Control number of cancellation within a given scope
+        -   setup in the config: `subscription_re_cancellation_days`
+        -   added method : canCancelSubscription : to check subscriber is able to cancel
+        -   added method: cancelSubscription : to cancel subscription of the current subscriber
+
+16. change subscription
+    -   when changimg subscription status, you can provide also the expiration time
+    -   when the status to change is equal to canceled, directly the package will set the canceled at value on the subscriptiion model

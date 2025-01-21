@@ -30,6 +30,11 @@ class DeleteConsumptionData extends BaseData
         ];
     }
 
+    public function boot()
+    {
+        $this->deleteCachedSubscriptionCostKey($this->subscriber);
+    }
+
     public function getConsumptionIds(): Collection
     {
         if (count($this->consumption_ids)) return collect($this->consumption_ids);

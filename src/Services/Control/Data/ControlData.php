@@ -164,13 +164,9 @@ class ControlData extends BaseData
      */
     public function trialPeriodHasExpired()
     {
-        if (
-            !$this->isInTrialPeriod() || !$this->subscription->trial_end_on
-        ) return null;
+        $this->throwWhenFieldAbsent(['subscriber']);
 
-        $period = Carbon::parse($this->subscription->trial_end_on);
-
-        return $period->isPast();
+        return $this->subscription->status === Subscription::STATUS_TRIAL_EXPIRED;
     }
 
     /**
@@ -194,15 +190,31 @@ class ControlData extends BaseData
 
         $endDate = Carbon::parse($this->subscription->trial_end_on);
 
+        if ($endDate->isPast()) return 0;
+
         return now()->startOfDay()->diffInDays($endDate);
     }
 
     /**
-     * Check subscription is active or trial active
+     * Fetch subscription remaining days when in grace period
+     */
+    public function remainingDaysOfGracePeriod()
+    {
+        if (!$this->subscriptionIsInGrace()) return 0;
+
+        $endDate = Carbon::parse($this->subscription->expired_at);
+
+        if ($endDate->isPast() || $endDate->isToday()) return 0;
+
+        return now()->startOfDay()->diffInDays($endDate);
+    }
+
+    /**
+     * Check subscription is active
      */
     public function subscriptionIsActive(): bool
     {
-        if ($this->trialPeriodHasExpired() === false) return true;
+        $this->throwWhenFieldAbsent(['subscriber']);
 
         return $this->subscription->status === Subscription::STATUS_ACTIVE;
     }
@@ -212,7 +224,19 @@ class ControlData extends BaseData
      */
     public function subscriptionIsSuspended(): bool
     {
+        $this->throwWhenFieldAbsent(['subscriber']);
+
         return $this->subscription->status === Subscription::STATUS_SUSPENDED;
+    }
+
+    /**
+     * Check subscription is in grace period
+     */
+    public function subscriptionIsInGrace(): bool
+    {
+        $this->throwWhenFieldAbsent(['subscriber']);
+
+        return $this->subscription->status === Subscription::STATUS_GRACE;
     }
 
     /**
@@ -220,6 +244,8 @@ class ControlData extends BaseData
      */
     public function subscriptionIsExpired(): bool
     {
+        $this->throwWhenFieldAbsent(['subscriber']);
+
         return $this->subscription->status === Subscription::STATUS_EXPIRED;
     }
 
@@ -228,7 +254,29 @@ class ControlData extends BaseData
      */
     public function subscriptionIsCanceled(): bool
     {
+        $this->throwWhenFieldAbsent(['subscriber']);
+
         return $this->subscription->status === Subscription::STATUS_CANCELED;
+    }
+
+    /**
+     * Check subscription is using free plan
+     */
+    public function subscriptionIsFree(): bool
+    {
+        $this->throwWhenFieldAbsent(['subscriber']);
+
+        return $this->subscription->status === Subscription::STATUS_FREE_ACTIVE;
+    }
+
+    /**
+     * check if subscriber 
+     */
+    public function subscriptionHadTrialPeriod()
+    {
+        $this->throwWhenFieldAbsent(['subscriber']);
+
+        return $this->subscription->trial_end_on !== null;
     }
 
     /**
@@ -245,7 +293,7 @@ class ControlData extends BaseData
      * Get a feature whose value is overriden based on its pivot 
      * @param string|Feature $featureSlug
      */
-    public function getOverridenPlanFeature($featureSlug): ?OveridenFeaturePlanData
+    public function getOveridenPlanFeature($featureSlug): ?OveridenFeaturePlanData
     {
         $this->throwWhenFieldAbsent(['subscriber']);
 

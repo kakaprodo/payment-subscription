@@ -10,6 +10,7 @@ use Kakaprodo\PaymentSubscription\Models\Traits\HasSubscription;
 /**
  * @property HasSubscription $subscriber
  * @property string $status
+ * @property string $expired_at
  */
 class ChangeSubscriptionStatusData extends BaseData
 {
@@ -24,7 +25,8 @@ class ChangeSubscriptionStatusData extends BaseData
             'subscriber' => $this->property()->customValidator(
                 fn($subscriber) => Util::forceClassTrait(HasSubscription::class, $subscriber)
             ),
-            'status' => $this->property()->inArray($supportedStatuses)
+            'status' => $this->property()->inArray($supportedStatuses),
+            'expired_at?' => $this->property(),
         ];
     }
 }

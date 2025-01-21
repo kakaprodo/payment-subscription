@@ -27,6 +27,25 @@ trait HasSubscription
     }
 
     /**
+     * Cancel subscription after checking if subscriber is authorized 
+     * to do so
+     */
+    public function cancelSubscription(): ?Subscription
+    {
+        return PaymentSub::subscription()->cancel($this);
+    }
+
+    /**
+     * Check subscriber is able to cancel a subscription
+     */
+    public function canCancelSubscription(): bool
+    {
+        return PaymentSub::subscription()->canCancel($this);
+    }
+
+
+
+    /**
      * the subscription plan of the current model
      */
     public function subscription()
@@ -41,6 +60,16 @@ trait HasSubscription
     {
         return PaymentSub::subscription()->cost($this, $filterOptions);
     }
+
+    /**
+     * Retrieve and cash the current net cost of the subscription
+     */
+    public function subscriptionCachedNetCost()
+    {
+        return PaymentSub::subscription()->cachedNetCost($this);
+    }
+
+
 
     /**
      * Add a discount to the model's subscription
@@ -123,7 +152,8 @@ trait HasSubscription
     public function activateSubscriptionFeature(
         $feature,
         ?Model $activable = null,
-        $reference = null
+        $reference = null,
+        array $options = []
     ) {
         return PaymentSub::subscription()->toggleFeatureActivation(
             $this,
@@ -131,7 +161,8 @@ trait HasSubscription
                 'feature' => $feature,
                 'activable' => $activable,
                 'activating' => true,
-                'reference' =>  $reference
+                'reference' =>  $reference,
+                ...$options
             ]
         );
     }
@@ -142,14 +173,18 @@ trait HasSubscription
      * @param string|Discount $discount
      * @param ?Model $activable
      */
-    public function disableSubscriptionFeature($feature, ?Model $activable = null)
-    {
+    public function disableSubscriptionFeature(
+        $feature,
+        ?Model $activable = null,
+        array $options = []
+    ) {
         return PaymentSub::subscription()->toggleFeatureActivation(
             $this,
             [
                 'feature' => $feature,
                 'activable' => $activable,
-                'activating' => false
+                'activating' => false,
+                ...$options
             ]
         );
     }

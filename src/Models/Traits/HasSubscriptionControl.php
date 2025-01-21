@@ -24,9 +24,9 @@ trait HasSubscriptionControl
      * Get a plan feature whose value is overriden based on its pivot 
      * @param string|Feature $featureSlug
      */
-    public function getOverridenPlanFeature($featureSlug): ?OveridenFeaturePlanData
+    public function getOveridenPlanFeature($featureSlug): ?OveridenFeaturePlanData
     {
-        return PaymentSub::control()->data($this)->getOverridenPlanFeature($featureSlug);
+        return PaymentSub::control()->data($this)->getOveridenPlanFeature($featureSlug);
     }
 
 
@@ -127,6 +127,18 @@ trait HasSubscriptionControl
     }
 
     /**
+     * Get the remaining days of a subscription in grace period
+     */
+    public function getRemainingDaysOfGracePeriod()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->remainingDaysOfGracePeriod();
+    }
+
+
+
+    /**
      * Check subscription is active or its trial is active
      */
     public function subscriptionIsActive()
@@ -147,6 +159,16 @@ trait HasSubscriptionControl
     }
 
     /**
+     * Check subscription is in grace period
+     */
+    public function subscriptionInGracePeriod()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->subscriptionIsInGrace();
+    }
+
+    /**
      * Check subscription is expired
      */
     public function subscriptionIsExpired()
@@ -164,5 +186,26 @@ trait HasSubscriptionControl
         return PaymentSub::control()
             ->data($this)
             ->subscriptionIsCanceled();
+    }
+
+    /**
+     * Check subscription is free
+     */
+    public function subscriptionIsFree()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->subscriptionIsFree();
+    }
+
+    /**
+     * Check if the current subscriber has already been in trial 
+     * period
+     */
+    public function onceHadTrialPeriod()
+    {
+        return PaymentSub::control()
+            ->data($this)
+            ->subscriptionHadTrialPeriod();
     }
 }

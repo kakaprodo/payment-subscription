@@ -27,4 +27,9 @@ class SaveConsumptionData extends BaseData
             'is_paid?' => $this->property()->default(false)
         ];
     }
+
+    public function boot()
+    {
+        $this->deleteCachedSubscriptionCostKey($this->subscriber);
+    }
 }

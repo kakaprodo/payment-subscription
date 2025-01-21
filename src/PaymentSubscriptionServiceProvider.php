@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Kakaprodo\PaymentSubscription\Commands\SeedDataCommand;
 use Kakaprodo\PaymentSubscription\Commands\ConfigInstallCommand;
 use Kakaprodo\PaymentSubscription\Commands\DetectExpiredSubscriptionCommand;
+use Kakaprodo\PaymentSubscription\Commands\DetectExpiringSubscriptionsCommand;
+use Kakaprodo\PaymentSubscription\Commands\SuspendSubscriptionInGracePeriodCommand;
 
 class PaymentSubscriptionServiceProvider extends ServiceProvider
 {
@@ -41,7 +43,9 @@ class PaymentSubscriptionServiceProvider extends ServiceProvider
         $this->commands([
             ConfigInstallCommand::class,
             SeedDataCommand::class,
-            DetectExpiredSubscriptionCommand::class
+            DetectExpiredSubscriptionCommand::class,
+            DetectExpiringSubscriptionsCommand::class,
+            SuspendSubscriptionInGracePeriodCommand::class,
         ]);
     }
 
@@ -51,6 +55,10 @@ class PaymentSubscriptionServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/config/payment-subscription.php' => config_path('payment-subscription.php'),
         ], 'payment-subscription');
+
+        $this->publishes([
+            __DIR__ . '/config/payment-subscription-seeder.php' => config_path('payment-subscription-seeder.php'),
+        ], 'payment-subscription-seeder');
     }
 
     protected function stackToLoad()

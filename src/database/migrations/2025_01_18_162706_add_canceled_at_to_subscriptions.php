@@ -15,7 +15,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table((new Subscription())->getTable(), function (Blueprint $table) {
-            $table->date('trial_end_on')->nullable();
+            $table->dateTime('canceled_at')->nullable();
         });
     }
 
@@ -27,7 +27,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table((new Subscription())->getTable(), function (Blueprint $table) {
-            $table->dropColumn('trial_end_on');
+            $table->dropColumn('canceled_at');
         });
     }
 };

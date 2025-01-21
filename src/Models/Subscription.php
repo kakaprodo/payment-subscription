@@ -17,13 +17,17 @@ class Subscription extends Model
         'discount_id',
         'status',
         'expired_at',
-        'trial_end_on'
+        'trial_end_on',
+        'canceled_at'
     ];
 
+    const STATUS_FREE_ACTIVE = 'free_active';
     const STATUS_ACTIVE = 'active';
     const STATUS_EXPIRED = 'expired';
     const STATUS_CANCELED = 'canceled';
     const STATUS_TRIAL_ACTIVE = 'trial_active';
+    const STATUS_TRIAL_EXPIRED = 'trial_expired';
+    const STATUS_GRACE = 'grace';
     const STATUS_SUSPENDED = 'suspended';
 
     static $supportedStatus = [
@@ -31,6 +35,8 @@ class Subscription extends Model
         self::STATUS_EXPIRED,
         self::STATUS_CANCELED,
         self::STATUS_TRIAL_ACTIVE,
+        self::STATUS_TRIAL_EXPIRED,
+        self::STATUS_GRACE,
         self::STATUS_SUSPENDED,
     ];
     /**
@@ -73,7 +79,8 @@ class Subscription extends Model
         )->withPivot([
             'activable_type',
             'activable_id',
-            'reference'
+            'reference',
+            'description'
         ])->withTimestamps();
     }
 }

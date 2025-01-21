@@ -23,7 +23,21 @@ trait HasActivablePlanFeature
             'activable_type',
             'activable_id',
             'reference',
-            'subscription_id'
-        ])->wherePivot('activable_type', static::class);
+            'subscription_id',
+            'description'
+        ])->withTimestamps()->wherePivot('activable_type', static::class);
+    }
+
+    public function getActivatedFeature($featureSlug, $reference = null): ?Feature
+    {
+        $query = $this->activated_features()
+            ->where(((new Feature())->getTable()) . '.slug', $featureSlug);
+
+        if ($reference !== null) $query->wherePivot(
+            ((new FeatureSubscripion())->getTable()) . '.reference',
+            $reference
+        );
+
+        return $query->first();
     }
 }

@@ -12,6 +12,12 @@ class ChangeSubscriptionStatusAction extends CustomActionBuilder
     {
         $subscription = $data->subscriber->subscription;
         $subscription->status = $data->status;
+
+        if ($data->expired_at)  $subscription->expired_at = $data->expired_at;
+        if ($data->status === Subscription::STATUS_CANCELED) {
+            $subscription->canceled_at = now();
+        }
+
         $subscription->save();
 
         return  $subscription;

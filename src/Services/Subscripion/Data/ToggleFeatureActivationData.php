@@ -37,7 +37,8 @@ class ToggleFeatureActivationData extends BaseData
                 fn($subscriber) => Util::forceClassTrait(HasActivablePlanFeature::class, $subscriber)
             ),
             'activating?' => $this->property()->default(true),
-            'reference?' => $this->property()->string()
+            'reference?' => $this->property()->string(),
+            'description?' => $this->property()->string(),
         ];
     }
 
@@ -53,5 +54,7 @@ class ToggleFeatureActivationData extends BaseData
                 "Make the feature {$this->feature->name} activable first"
             );
         }
+
+        $this->deleteCachedSubscriptionCostKey($this->subscriber);
     }
 }
