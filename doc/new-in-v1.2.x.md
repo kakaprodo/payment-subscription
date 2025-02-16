@@ -28,7 +28,8 @@
     - trial_active
     - trial_expired
     - grace
-    - suspended
+    - suspended,
+    - canceled
 8. Support Trial period
 
 -   define trial period in config
@@ -96,3 +97,8 @@
 16. change subscription
     -   when changimg subscription status, you can provide also the expiration time
     -   when the status to change is equal to canceled, directly the package will set the canceled at value on the subscriptiion model
+
+From v1.2.1 17. Subscription period set/extends
+
+-   added the support of the column: started_at
+-   column will be set on subscription creation and when it is extended
