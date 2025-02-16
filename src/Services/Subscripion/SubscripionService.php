@@ -134,7 +134,8 @@ class SubscripionService extends ServiceBase
     public function extendExpirationPeriod(Model $subscriber, $period = null): Subscription
     {
         $subscription = $subscriber->subscription;
-        $subscription->expired_at = $period ?? now()->addMonth();
+        $subscription->expired_at = $period ?? today()->addMonth();
+        $subscription->started_at = today();
         $subscription->save();
         return  $subscription;
     }

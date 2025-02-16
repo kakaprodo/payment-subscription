@@ -15,6 +15,7 @@ use Kakaprodo\PaymentSubscription\Models\Traits\HasSubscription;
  * @property Discount $discount
  * @property DateTime|string|Illuminate\Support\Carbon $expired_at
  * @property DateTime|string|Illuminate\Support\Carbon $trial_end_on
+ * @property DateTime|string|Illuminate\Support\Carbon $started_at
  */
 class CreateSubscriptionData extends BaseData
 {
@@ -42,7 +43,8 @@ class CreateSubscriptionData extends BaseData
             ),
             'expired_at?' => $this->property()->castTo(
                 fn($expiredAt) => $this->trial_end_on ?? $expiredAt ?? now()->addMonth()
-            )
+            ),
+            'started_at?' => $this->property()->default(now())
         ];
     }
 
@@ -71,7 +73,8 @@ class CreateSubscriptionData extends BaseData
             'plan_id' => $this->plan->id,
             'discount_id' => $this->discount?->id,
             'expired_at' => $this->expired_at,
-            'trial_end_on' =>  $this->trial_end_on
+            'trial_end_on' =>  $this->trial_end_on,
+            'started_at' => $this->started_at
         ];
     }
 }
