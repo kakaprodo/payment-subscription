@@ -40,13 +40,15 @@ class SubscripionService extends ServiceBase
      * 
      * @param Model $subscriber
      * @param string|Discount $discount
+     * @param DateTime|string|Illuminate\Support\Carbon|null $expiredOn
      */
-    public function addDiscount(Model $subscriber, $discount): Subscription
+    public function addDiscount(Model $subscriber, $discount, $expiredOn = null): Subscription
     {
         return ToggleSubscriptionDiscountAction::process([
             'subscriber' => $subscriber,
             'discount' => $discount,
-            'should_add' => true
+            'should_add' => true,
+            'discount_expired_at' => $expiredOn,
         ]);
     }
 

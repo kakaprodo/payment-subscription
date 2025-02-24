@@ -75,10 +75,15 @@ trait HasSubscription
      * Add a discount to the model's subscription
      * 
      * @param string|Discount $discount
+     * @param DateTime|string|Illuminate\Support\Carbon|null $expiredOn
      */
-    public function addSubscriptionDiscount($discount): Subscription
+    public function addSubscriptionDiscount($discount, $expiredOn = null): Subscription
     {
-        return PaymentSub::subscription()->addDiscount($this, $discount);
+        return PaymentSub::subscription()->addDiscount(
+            $this,
+            $discount,
+            $expiredOn
+        );
     }
 
     /**

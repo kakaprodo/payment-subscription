@@ -102,3 +102,10 @@ From v1.2.1 17. Subscription period set/extends
 
 -   added the support of the column: started_at
 -   column will be set on subscription creation and when it is extended
+
+17. Subscription Discount
+
+-   support discount expiration time on a subscription
+-   when user is initiating a subscription , can provide an expiration time
+-   when discount is added to subscription, user can provide expiration time
+-   when subscription has discount without expiration, it is a lifetime discount

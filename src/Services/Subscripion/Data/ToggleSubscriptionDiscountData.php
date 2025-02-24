@@ -12,6 +12,7 @@ use Kakaprodo\PaymentSubscription\Models\Traits\HasSubscription;
  * @property HasSubscription $subscriber
  * @property Discount $discount
  * @property bool $should_add
+ * @property DateTime|string|Illuminate\Support\Carbon|null $discount_expired_at
  */
 class ToggleSubscriptionDiscountData extends BaseData
 {
@@ -26,7 +27,13 @@ class ToggleSubscriptionDiscountData extends BaseData
                 ->castTo(
                     fn($discount) => is_string($discount) ? Discount::getOrFail($discount) : $discount
                 ),
+            'discount_expired_at?',
             'should_add' => $this->property()->bool(true)
         ];
+    }
+
+    public function boot()
+    {
+        $this->deleteCachedSubscriptionCostKey($this->subscriber);
     }
 }

@@ -12,6 +12,7 @@ class ToggleSubscriptionDiscountAction extends CustomActionBuilder
     {
         $subscription = $data->subscriber->subscription;
         $subscription->discount_id = $data->should_add ? $data->discount?->id : null;
+        $subscription->discount_expired_at = $data->discount_expired_at;
         $subscription->save();
 
         return  $subscription;
