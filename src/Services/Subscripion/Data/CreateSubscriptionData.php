@@ -13,6 +13,7 @@ use Kakaprodo\PaymentSubscription\Models\Traits\HasSubscription;
  * @property PaymentPlan $plan
  * @property HasSubscription $subscriber
  * @property Discount $discount
+ * @property DateTime|string|Illuminate\Support\Carbon|null $discount_expired_at
  * @property DateTime|string|Illuminate\Support\Carbon $expired_at
  * @property DateTime|string|Illuminate\Support\Carbon $trial_end_on
  * @property DateTime|string|Illuminate\Support\Carbon $started_at
@@ -35,6 +36,7 @@ class CreateSubscriptionData extends BaseData
                 ->castTo(
                     fn($discount) => is_string($discount) ? Discount::getOrFail($discount) : $discount
                 ),
+            'discount_expired_at?',
             'is_trial' => $this->property()->bool(false),
             'trial_end_on?' => $this->property()->castTo(
                 fn($trialPeriod) => !$this->is_trial ? null : (
@@ -72,6 +74,7 @@ class CreateSubscriptionData extends BaseData
             'status' =>  $this->detectSubscriptionStatus(),
             'plan_id' => $this->plan->id,
             'discount_id' => $this->discount?->id,
+            'discount_expired_at' => $this->discount_expired_at,
             'expired_at' => $this->expired_at,
             'trial_end_on' =>  $this->trial_end_on,
             'started_at' => $this->started_at

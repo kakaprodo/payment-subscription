@@ -2,6 +2,7 @@
 
 namespace Kakaprodo\PaymentSubscription\Services\Subscripion\Data;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Kakaprodo\PaymentSubscription\Helpers\Util;
@@ -60,13 +61,24 @@ class SubscriptionCostData extends BaseData
     public function boot()
     {
         $this->plan = $this->subscription->plan;
-        $this->discount = $this->subscription->discount_id ? $this->subscription->discount : null;
+        $this->discount = $this->getDiscount();
 
         // load cost from consumptions list
         $this->shortConsumptionList();
 
         // load cost from activated features
         $this->loadActivatedFeatureCost();
+    }
+
+    private function getDiscount()
+    {
+        if (!$this->subscription->discount_id) return;
+
+        $discount = $this->subscription->discount;
+
+        if (!$this->subscription->discount_expired_at) return  $discount;
+
+        return  Carbon::parse($this->subscription->discount_expired_at)->isPast() ? null : $discount;
     }
 
     public function loadActivatedFeatureCost()

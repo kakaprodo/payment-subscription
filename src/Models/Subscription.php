@@ -19,7 +19,8 @@ class Subscription extends Model
         'expired_at',
         'trial_end_on',
         'canceled_at',
-        'started_at'
+        'started_at',
+        'discount_expired_at',
     ];
 
     const STATUS_FREE_ACTIVE = 'free_active';
