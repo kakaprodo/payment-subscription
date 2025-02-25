@@ -142,7 +142,7 @@ class SubscriptionCostData extends BaseData
 
         $this->discountAmount =  round($this->discount ? (($this->cost * $this->discount->percentage) / 100) : 0, 2);
 
-        return $this->cost - $this->discountAmount;
+        return round($this->cost - $this->discountAmount, 2);
     }
 
     /**

@@ -95,15 +95,16 @@
         -   added method: cancelSubscription : to cancel subscription of the current subscriber
 
 16. change subscription
+
     -   when changimg subscription status, you can provide also the expiration time
     -   when the status to change is equal to canceled, directly the package will set the canceled at value on the subscriptiion model
 
-From v1.2.1 17. Subscription period set/extends
+17. Subscription period set/extends: From v1.2.1
 
 -   added the support of the column: started_at
 -   column will be set on subscription creation and when it is extended
 
-17. Subscription Discount
+18. Subscription Discount: from version 1.2.2
 
 -   support discount expiration time on a subscription
 -   when user is initiating a subscription , can provide an expiration time
