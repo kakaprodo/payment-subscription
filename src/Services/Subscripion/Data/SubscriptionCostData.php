@@ -101,6 +101,7 @@ class SubscriptionCostData extends BaseData
                 )->first();
 
                 $featureOverridenData->activation_description = $feature->pivot->description ?? $feature->name;
+                $featureOverridenData->cost = $feature->pivot->cost ??  $featureOverridenData->cost;
                 return $featureOverridenData->all();
             }
         )->groupBy('activation_description')

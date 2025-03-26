@@ -82,7 +82,8 @@ class Subscription extends Model
             'activable_type',
             'activable_id',
             'reference',
-            'description'
+            'description',
+            'cost'
         ])->withTimestamps();
     }
 }

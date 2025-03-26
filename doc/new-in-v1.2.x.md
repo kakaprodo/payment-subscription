@@ -110,3 +110,8 @@
 -   when user is initiating a subscription , can provide an expiration time
 -   when discount is added to subscription, user can provide expiration time
 -   when subscription has discount without expiration, it is a lifetime discount
+
+19. Support cost on activate feature: from version 1.2.3
+
+-   you will need to run the migration to add the "cost" column to the FeatureSubscripion's appropriate table
+-   you will then need to provide the "cost" when activating the feature under the "options" arguments

@@ -31,7 +31,8 @@ class ToggleFeatureActivationAction extends CustomActionBuilder
             'subscription_id' => $data->subscription->id,
             'activable_id' => $data->activable ? $data->activable->id : null,
             'activable_type' => $data->activable ? get_class($data->activable) : null,
-            'reference' => $data->reference
+            'reference' => $data->reference,
+            'cost' => $data->cost
         ], [
             'description' => $data->description
         ]);
