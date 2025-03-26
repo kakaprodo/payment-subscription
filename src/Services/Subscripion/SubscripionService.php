@@ -91,11 +91,11 @@ class SubscripionService extends ServiceBase
     /**
      * Gate to subscription cost calculation
      */
-    public function cost(Model $subscriber, array $filterOptions = []): SubscriptionCostData
+    public function cost(Model $subscriber, array $options = []): SubscriptionCostData
     {
         return SubscriptionCostData::make($this->inputs([
             'subscriber' => $subscriber,
-            ...$filterOptions
+            ...$options
         ]));
     }
 

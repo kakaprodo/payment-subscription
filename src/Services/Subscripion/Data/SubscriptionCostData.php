@@ -157,7 +157,7 @@ class SubscriptionCostData extends BaseData
             'consumptions' => $this->shortConsumptionList['list'] ?? [],
             'activated_functionalities' => $this->activatedFeatureItems,
             'cost' => $this->cost,
-            'discounts' => ($this->discount ? ["{$this->discount->description} {$this->discount->percentage}%" => $this->discountAmount] : []),
+            'discounts' => ($this->discount ? ["{$this->discount->description} {$this->discount->percentage}%" => $this->discountAmount] : null),
             'net_cost' =>  $netCost
         ];
     }

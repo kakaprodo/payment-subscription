@@ -111,7 +111,15 @@
 -   when discount is added to subscription, user can provide expiration time
 -   when subscription has discount without expiration, it is a lifetime discount
 
-19. Support cost on activate feature: from version 1.2.3
+19. Subscription cost : details improvement 1.2.3
+
+-   Round subscription net cost to two decimal places.
+
+20. Support cost on activate feature: from version 1.2.4
 
 -   you will need to run the migration to add the "cost" column to the FeatureSubscripion's appropriate table
 -   you will then need to provide the "cost" when activating the feature under the "options" arguments
+
+21. Subscription - trial period - fix bug
+
+-   stop resetting the trial-period value if user has already consume it previously and decide to switch to another plan

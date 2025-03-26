@@ -13,7 +13,7 @@ class CreateSubscriptionAction extends CustomActionBuilder
         $subscription = $data->subscriber->subscription;
 
         if ($subscription) {
-            $subscription->fill($data->dataForDb());
+            $subscription->fill($data->dataForDb($subscription));
 
             $subscription->save();
             return  $subscription;

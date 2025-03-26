@@ -68,7 +68,7 @@ class CreateSubscriptionData extends BaseData
     /**
      * data to save in db
      */
-    public function dataForDb()
+    public function dataForDb(?Subscription $existingSubscription = null)
     {
         return [
             'status' =>  $this->detectSubscriptionStatus(),
@@ -76,7 +76,7 @@ class CreateSubscriptionData extends BaseData
             'discount_id' => $this->discount?->id,
             'discount_expired_at' => $this->discount_expired_at,
             'expired_at' => $this->expired_at,
-            'trial_end_on' =>  $this->trial_end_on,
+            'trial_end_on' => $existingSubscription?->trial_end_on ??  $this->trial_end_on,
             'started_at' => $this->started_at
         ];
     }
