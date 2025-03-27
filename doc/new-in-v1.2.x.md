@@ -120,6 +120,10 @@
 -   you will need to run the migration to add the "cost" column to the FeatureSubscripion's appropriate table
 -   you will then need to provide the "cost" when activating the feature under the "options" arguments
 
-21. Subscription - trial period - fix bug
+21. Subscription - trial period - fix bug ==> from version 1.2.5
 
 -   stop resetting the trial-period value if user has already consume it previously and decide to switch to another plan
+
+22. Support Rounding precision - from version 1.2.6
+
+-   You can now provide a rounding_precision in the config file or when you are calling the subscriptionCost method directly

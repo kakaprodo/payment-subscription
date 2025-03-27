@@ -21,6 +21,7 @@ use Kakaprodo\PaymentSubscription\Services\Plan\Data\Partial\OveridenFeaturePlan
  * @property Discount $discount
  * @property bool $is_paid
  * @property bool $all
+ * @property int $rounding_precision
  */
 class SubscriptionCostData extends BaseData
 {
@@ -55,6 +56,10 @@ class SubscriptionCostData extends BaseData
             ),
             'is_paid?' => $this->property()->default(false),
             'all?' => $this->property()->default(false),
+
+            'rounding_precision?' => $this->property()->default(
+                config('payment-subscription.control.rounding_precision', 2)
+            )
         ];
     }
 
@@ -139,11 +144,17 @@ class SubscriptionCostData extends BaseData
 
         $consumptionCost = ($this->shortConsumptionList['total'] ?? 0);
 
-        $this->cost = round($this->initialCost + $consumptionCost +  $this->totalActivatedFeature, 2);
+        $this->cost = round(
+            $this->initialCost + $consumptionCost +  $this->totalActivatedFeature,
+            $this->rounding_precision
+        );
 
-        $this->discountAmount =  round($this->discount ? (($this->cost * $this->discount->percentage) / 100) : 0, 2);
+        $this->discountAmount =  round(
+            $this->discount ? (($this->cost * $this->discount->percentage) / 100) : 0,
+            $this->rounding_precision
+        );
 
-        return round($this->cost - $this->discountAmount, 2);
+        return round($this->cost - $this->discountAmount,  $this->rounding_precision);
     }
 
     /**
