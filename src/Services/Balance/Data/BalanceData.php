@@ -83,14 +83,12 @@ class BalanceData extends BaseData
      */
     public function realBalanceAmount()
     {
-        $totalIn = $this->totalEntriesAmount(true);
-        $totalOut = $this->totalEntriesAmount(false);
-
-        return $totalIn - $totalOut;
+        return $this->balance()->entries()->sum('amount');
     }
 
     /**
      * Total entries based on movement
+     * @deprecated since we have started storing negative balance for exit
      */
     public function totalEntriesAmount($isIn = true)
     {

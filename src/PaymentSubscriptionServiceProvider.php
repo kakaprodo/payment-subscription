@@ -7,6 +7,7 @@ use Kakaprodo\PaymentSubscription\Commands\SeedDataCommand;
 use Kakaprodo\PaymentSubscription\Commands\ConfigInstallCommand;
 use Kakaprodo\PaymentSubscription\Commands\DetectExpiredSubscriptionCommand;
 use Kakaprodo\PaymentSubscription\Commands\DetectExpiringSubscriptionsCommand;
+use Kakaprodo\PaymentSubscription\Commands\SupportNegativeAmountOnExitBalance;
 use Kakaprodo\PaymentSubscription\Commands\SuspendSubscriptionInGracePeriodCommand;
 
 class PaymentSubscriptionServiceProvider extends ServiceProvider
@@ -46,6 +47,7 @@ class PaymentSubscriptionServiceProvider extends ServiceProvider
             DetectExpiredSubscriptionCommand::class,
             DetectExpiringSubscriptionsCommand::class,
             SuspendSubscriptionInGracePeriodCommand::class,
+            SupportNegativeAmountOnExitBalance::class,
         ]);
     }
 
