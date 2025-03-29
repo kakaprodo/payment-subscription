@@ -127,3 +127,8 @@
 22. Support Rounding precision - from version 1.2.6
 
 -   You can now provide a rounding_precision in the config file or when you are calling the subscriptionCost method directly
+
+23. Improve balance entries record - from version 1.2.7
+
+-   For all exit balance movement, their amount should be recorded with a negative sign
+-   For people who were using the version < 1.2.7, should run the command: `php artisan payment-subscription:correct-exit-balance` to fit this migration
