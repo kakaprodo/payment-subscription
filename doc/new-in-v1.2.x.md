@@ -15,7 +15,7 @@
 
 4. Plan list: get list with formatted overiden features: use the method:
     - allWithOverridenList: defined on the plan service to fetch all plans with formatted values
-    - overridenFeatures: defined on the PaymentPlan model to fromat features of a single plan
+    - overridenFeatures: defined on the PaymentPlan model to format features of a single plan
 5. Bulk creation: when creating many plans, features and discounts at the same time, the package create only if record does not exist otherwise it updates
 
 6. Add ability to cache balance
@@ -40,33 +40,29 @@
 
 9.  added new method:
 
-    -   $subscriber->isInTrialPeriod();
-    -   $subscriber->trialPeriodHasExpired();
-    -   $subscriber->getTrialRemainingDays();
-    -   $subscriber->subscriptionIsActive();
-    -   $subscriber->subscriptionIsSuspended();
-    -   $subscriber->subscriptionIsExpired();
-    -   $subscriber->subscriptionIsCanceled();
-    -   $subscriber->subscriptionIsFree() : when a plan is_free = true
-    -   $subscriber->onceHadTrialPeriod()
-    -   $subscriber->subscriptionCachedNetCost()
-    -   $subscriber->myPlan();
-    -   $subscriber->getOveridenPlanFeature($featureSlug|$featureModel)
+    -   $subscriber->isInTrialPeriod();❌
+    -   $subscriber->trialPeriodHasExpired();❌
+    -   $subscriber->getTrialRemainingDays();❌
+    -   $subscriber->subscriptionIsActive();❌
+    -   $subscriber->subscriptionIsSuspended();❌
+    -   $subscriber->subscriptionIsExpired();❌
+    -   $subscriber->subscriptionIsCanceled();❌
+    -   $subscriber->subscriptionIsFree() : when a plan is_free = true❌
+    -   $subscriber->onceHadTrialPeriod() ❌
+    -   $subscriber->subscriptionCachedNetCost()❌
+    -   $subscriber->myPlan();❌
+    -   $subscriber->getOveridenPlanFeature($featureSlug|$featureModel)❌
     -   $balanceable->balanceHasMoneyWithSubscriptionUsageIncluded()
 
 10. Feature activation
 
 -   support the ability to provide an action `description`
 -   the method activateSubscriptionFeature accept now a fourth argument, an array options where description can be passed
--   get an activated feature: from actiovable trait we have added the method `getActivatedFeature`
+-   get an activated feature: from activable trait we have added the method `getActivatedFeature`
 
 11. consumption
 
 -   added `cost` brut on costwithdetails
-
-12. Connect feature to plan
-
-    -   Doc improvement: the connection will be created only if it does not exist otherwise update connection
 
 13. Subscription Expiration Events
 

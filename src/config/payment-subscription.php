@@ -64,9 +64,12 @@ return [
     | - 'active'
     | - 'expired'
     | - 'canceled'
-    |
+    | - 'free_active'
+    | - 'trial_active'
+    | - 'trial_expired'
+    | - 'grace'
+    | - 'suspended
     */
-
     'status' => Subscription::$supportedStatus,
 
     /*
@@ -133,7 +136,7 @@ return [
     | Prepayment Balance Control
     |--------------------------------------------------------------------------
     |
-    | Configure how the manages the prepayment balances
+    | Configure how to manage the prepayment balances
     | `expires_after`: Days after what a balance should be expired
     | `cache_verification_for`: Seconds after what the balance hasMoney  
     |                           verification should be refetched from Db

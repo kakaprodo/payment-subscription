@@ -21,7 +21,9 @@ class SaveConsumptionData extends BaseData
             'subscriber?' => $this->property(Model::class)->customValidator(
                 fn($subscriber) => Util::forceClassTrait(HasSubscription::class, $subscriber)
             ),
-            'description' => $this->property()->string(),
+            'description' => $this->property()->string()->castTo(function ($value) {
+                return $value ? $value . ' - ' . now()->format('M d, Y \a\t H:i') : null;
+            }),
             'price' => $this->property()->number(),
             'action?' => $this->property()->inArray(config('payment-subscription.consumption_actions')),
             'is_paid?' => $this->property()->default(false)

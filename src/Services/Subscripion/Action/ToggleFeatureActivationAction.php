@@ -34,7 +34,7 @@ class ToggleFeatureActivationAction extends CustomActionBuilder
             'reference' => $data->reference,
             'cost' => $data->cost
         ], [
-            'description' => $data->description
+            'description' => $data->description . ' ' . now()->format('M d, Y \a\t H:i'),
         ]);
 
         return true;

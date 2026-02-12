@@ -18,7 +18,7 @@ use Kakaprodo\PaymentSubscription\Exceptions\ActivationOfNonActivableFeatureExce
  * @property Feature $feature
  * @property bool $activating
  * @property string $reference : any reference for deep searching
- * @property ?string $cost
+ * @property float|null $cost
  */
 class ToggleFeatureActivationData extends BaseData
 {
